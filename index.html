@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trading Dashboard</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <aside>
+        <nav class="sidebar" aria-label="Primary">
+          <ul>
+            <li>
+              <div class="sidebar-item sidebar-item--active">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Dashboard</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Autotraders</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Exchanges</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Activity</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Strategy Backtest</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Affiliate</span>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="main">
+        <!-- Header: global dashboard context and title area -->
+        <div class="dashboard-row dashboard-row--full">
+          <header class="section section--header">
+            <div class="section-header">Dashboard</div>
+            <div class="section-body"></div>
+          </header>
+        </div>
+        <!-- Asset summary: primary overview and high-level totals -->
+        <div class="dashboard-row dashboard-row--full">
+          <section class="section section--primary">
+            <div class="section-header">Asset Summary</div>
+            <div class="section-body"></div>
+          </section>
+        </div>
+        <!-- Middle summary: balances and critical alerts overview -->
+        <div class="dashboard-row dashboard-row--split">
+          <div class="dashboard-left">
+            <section class="section section--secondary">
+              <div class="section-header">Exchanges Summary</div>
+              <div class="section-body"></div>
+            </section>
+          </div>
+          <div class="dashboard-right">
+            <section class="section section--secondary">
+              <div class="section-header">Alerts</div>
+              <div class="section-body"></div>
+            </section>
+          </div>
+        </div>
+        <!-- Bottom summary: top strategies and affiliate callout -->
+        <div class="dashboard-row dashboard-row--split dashboard-row--bottom">
+          <div class="dashboard-left">
+            <section class="section section--secondary">
+              <div class="section-header">Top Autotraders</div>
+              <div class="section-body"></div>
+            </section>
+          </div>
+          <div class="dashboard-right">
+            <section class="section section--secondary">
+              <div class="section-header">Become Affiliate</div>
+              <div class="section-body"></div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="src/scripts/main.js"></script>
+  </body>
+</html>
