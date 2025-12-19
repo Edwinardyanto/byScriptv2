@@ -8,8 +8,8 @@
   </head>
   <body>
     <div id="app" class="app">
-      <aside class="sidebar">
-        <nav aria-label="Primary">
+      <aside>
+        <nav class="sidebar" aria-label="Primary">
           <ul>
             <li>Dashboard</li>
             <li>Autotraders</li>
@@ -21,12 +21,28 @@
         </nav>
       </aside>
       <main class="main">
-        <header class="section">Dashboard</header>
-        <section class="section section--primary">Asset Summary</section>
-        <section class="section section--secondary">Exchanges Summary</section>
-        <section class="section section--secondary">Alerts</section>
-        <section class="section section--secondary">Top Autotraders</section>
-        <section class="section section--secondary">Autotraders Summary</section>
+        <div class="main-header">
+          <header class="section">Dashboard</header>
+        </div>
+        <div class="main-row">
+          <section class="section section--primary">Asset Summary</section>
+        </div>
+        <div class="main-row main-row--two-cols">
+          <div class="col">
+            <section class="section section--secondary">Exchanges Summary</section>
+          </div>
+          <div class="col">
+            <section class="section section--secondary">Alerts</section>
+          </div>
+        </div>
+        <div class="main-row main-row--two-cols">
+          <div class="col">
+            <section class="section section--secondary">Top Autotraders</section>
+          </div>
+          <div class="col">
+            <section class="section section--secondary">Autotraders Summary</section>
+          </div>
+        </div>
       </main>
     </div>
     <script type="module" src="src/scripts/main.js"></script>
