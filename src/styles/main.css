@@ -1,8 +1,8 @@
 :root {
-  color-scheme: dark;
-  --color-bg: #0f1115;
-  --color-text: #e5e7eb;
-  --color-muted: #9ca3af;
+  --color-bg: #f4f4f5;
+  --color-surface: #ffffff;
+  --color-border: #d4d4d8;
+  --color-text: #1f2937;
   --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
 }
 
@@ -21,6 +21,40 @@ body {
   line-height: 1.5;
 }
 
-#app {
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
   min-height: 100vh;
+  gap: 16px;
+  padding: 16px;
+}
+
+.sidebar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  min-height: 400px;
+  padding: 16px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  min-height: 120px;
+  padding: 16px;
+}
+
+.section--primary {
+  min-height: 240px;
+}
+
+.section--secondary {
+  min-height: 180px;
 }
