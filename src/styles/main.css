@@ -21,6 +21,15 @@ body {
   line-height: 1.5;
 }
 
+.sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .app {
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -40,6 +49,12 @@ body {
 .main {
   display: flex;
   flex-direction: column;
+  gap: 16px;
+}
+
+.section-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
 

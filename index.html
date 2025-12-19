@@ -8,11 +8,29 @@
   </head>
   <body>
     <div id="app" class="app">
-      <aside class="sidebar">Sidebar</aside>
+      <aside class="sidebar">
+        <nav aria-label="Primary">
+          <ul>
+            <li>Dashboard</li>
+            <li>Autotraders</li>
+            <li>Exchanges</li>
+            <li>Activity</li>
+            <li>Strategy Backtest</li>
+            <li>Affiliate</li>
+          </ul>
+        </nav>
+      </aside>
       <main class="main">
-        <header class="section">Header</header>
-        <section class="section section--primary">Section</section>
-        <section class="section section--secondary">Section</section>
+        <header class="section">Dashboard</header>
+        <section class="section section--primary">Asset Summary</section>
+        <div class="section-row">
+          <section class="section section--secondary">Exchanges Summary</section>
+          <section class="section section--secondary">Alerts</section>
+        </div>
+        <div class="section-row">
+          <section class="section section--secondary">Top Autotraders</section>
+          <section class="section section--secondary">Autotraders Summary</section>
+        </div>
       </main>
     </div>
     <script type="module" src="src/scripts/main.js"></script>
