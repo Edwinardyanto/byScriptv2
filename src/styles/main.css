@@ -60,7 +60,15 @@ body {
   gap: 16px;
 }
 
+.dashboard-row--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .dashboard-row--split {
+  grid-template-columns: 2fr 1fr;
+}
+
+.dashboard-row--bottom {
   grid-template-columns: 2fr 1fr;
 }
 
