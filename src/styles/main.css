@@ -1,0 +1,113 @@
+:root {
+  --color-bg: #f4f4f5;
+  --color-surface: #ffffff;
+  --color-border: #d4d4d8;
+  --color-text: #1f2937;
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --gap-inner: 16px;
+  --gap-outer: 24px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  overflow: hidden;
+}
+
+.sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  gap: var(--gap-outer);
+  padding: var(--gap-outer);
+}
+
+.sidebar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  min-height: 100%;
+  padding: 16px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-outer);
+  overflow: auto;
+  min-height: 0;
+}
+
+.dashboard-row {
+  display: grid;
+  gap: var(--gap-inner);
+  align-items: stretch;
+}
+
+.dashboard-row--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.dashboard-row--split {
+  grid-template-columns: 2fr 1fr;
+}
+
+.dashboard-row--bottom {
+  grid-template-columns: 2fr 1fr;
+}
+
+.dashboard-left,
+.dashboard-right {
+  display: flex;
+}
+
+.dashboard-left > .section,
+.dashboard-right > .section {
+  flex: 1;
+}
+
+.section {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  min-height: 120px;
+  padding: 16px;
+  width: 100%;
+}
+
+.section--header {
+  min-height: 80px;
+}
+
+.section--primary {
+  min-height: 240px;
+}
+
+.section--secondary {
+  min-height: 180px;
+}
+
+@media (max-width: 1024px) {
+  .app {
+    grid-template-columns: 200px 1fr;
+  }
+}

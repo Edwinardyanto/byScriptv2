@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trading Dashboard</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <aside>
+        <nav class="sidebar" aria-label="Primary">
+          <ul>
+            <li>Dashboard</li>
+            <li>Autotraders</li>
+            <li>Exchanges</li>
+            <li>Activity</li>
+            <li>Strategy Backtest</li>
+            <li>Affiliate</li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="main">
+        <!-- Header: global dashboard context and title area -->
+        <div class="dashboard-row dashboard-row--full">
+          <header class="section section--header">Dashboard</header>
+        </div>
+        <!-- Asset summary: primary overview and high-level totals -->
+        <div class="dashboard-row dashboard-row--full">
+          <section class="section section--primary">Asset Summary</section>
+        </div>
+        <!-- Middle summary: balances and critical alerts overview -->
+        <div class="dashboard-row dashboard-row--split">
+          <div class="dashboard-left">
+            <section class="section section--secondary">Exchanges Summary</section>
+          </div>
+          <div class="dashboard-right">
+            <section class="section section--secondary">Alerts</section>
+          </div>
+        </div>
+        <!-- Bottom summary: top strategies and affiliate callout -->
+        <div class="dashboard-row dashboard-row--split dashboard-row--bottom">
+          <div class="dashboard-left">
+            <section class="section section--secondary">Top Autotraders</section>
+          </div>
+          <div class="dashboard-right">
+            <section class="section section--secondary">Become Affiliate</section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script type="module" src="src/scripts/main.js"></script>
+  </body>
+</html>
