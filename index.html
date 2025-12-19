@@ -54,29 +54,75 @@
         <!-- Header: global dashboard context and title area -->
         <div class="dashboard-row dashboard-row--full">
           <header class="section section--header">
-            <div class="section-header">Dashboard</div>
-            <div class="section-body"></div>
+            <div class="section-header">
+              <h1 class="section-title">Dashboard</h1>
+            </div>
+            <div class="section-body">
+              <div class="header-meta">
+                <span class="pill" data-field="header.context"></span>
+                <span class="header-subtitle" data-field="header.subtitle"></span>
+              </div>
+            </div>
           </header>
         </div>
         <!-- Asset summary: primary overview and high-level totals -->
         <div class="dashboard-row dashboard-row--full">
           <section class="section section--primary">
-            <div class="section-header">Asset Summary</div>
-            <div class="section-body"></div>
+            <div class="section-header">
+              <h2 class="section-title">Asset Summary</h2>
+            </div>
+            <div class="section-body">
+              <div class="card card--summary">
+                <div class="stat">
+                  <div class="stat-label">Total Balance</div>
+                  <div class="stat-value" data-field="asset.totalBalance"></div>
+                </div>
+                <div class="stat-meta">
+                  <span class="badge badge--positive" data-field="asset.change"></span>
+                  <span class="stat-caption" data-field="asset.changeLabel"></span>
+                </div>
+                <div class="chart-placeholder" data-field="asset.chartLabel">
+                  Chart Placeholder
+                </div>
+              </div>
+            </div>
           </section>
         </div>
         <!-- Middle summary: balances and critical alerts overview -->
         <div class="dashboard-row dashboard-row--split">
           <div class="dashboard-left">
             <section class="section section--secondary">
-              <div class="section-header">Exchanges Summary</div>
-              <div class="section-body"></div>
+              <div class="section-header">
+                <h2 class="section-title">Exchanges Summary</h2>
+              </div>
+              <div class="section-body">
+                <div class="summary-grid">
+                  <div class="summary-list" data-list="exchanges"></div>
+                  <div class="summary-total">
+                    <div class="stat-label">Total Balance</div>
+                    <div class="stat-value" data-field="exchanges.total"></div>
+                    <div class="chart-placeholder">Chart Placeholder</div>
+                  </div>
+                </div>
+              </div>
             </section>
           </div>
           <div class="dashboard-right">
             <section class="section section--secondary">
-              <div class="section-header">Alerts</div>
-              <div class="section-body"></div>
+              <div class="section-header">
+                <h2 class="section-title">Alerts</h2>
+              </div>
+              <div class="section-body">
+                <div class="alert-card">
+                  <div class="alert-title" data-field="alerts.title"></div>
+                  <div class="alert-message" data-field="alerts.message"></div>
+                  <div class="alert-meta">
+                    <span class="badge badge--warning" data-field="alerts.type"></span>
+                    <span class="alert-time" data-field="alerts.time"></span>
+                  </div>
+                  <button class="button button--ghost" type="button" data-field="alerts.cta"></button>
+                </div>
+              </div>
             </section>
           </div>
         </div>
@@ -84,14 +130,35 @@
         <div class="dashboard-row dashboard-row--split dashboard-row--bottom">
           <div class="dashboard-left">
             <section class="section section--secondary">
-              <div class="section-header">Top Autotraders</div>
-              <div class="section-body"></div>
+              <div class="section-header">
+                <h2 class="section-title">Top Autotraders</h2>
+              </div>
+              <div class="section-body">
+                <div class="autotraders-list" data-list="topAutotraders"></div>
+              </div>
             </section>
           </div>
           <div class="dashboard-right">
             <section class="section section--secondary">
-              <div class="section-header">Become Affiliate</div>
-              <div class="section-body"></div>
+              <div class="section-header">
+                <h2 class="section-title">Autotraders Summary</h2>
+              </div>
+              <div class="section-body">
+                <div class="stats-stack">
+                  <div class="stat-row">
+                    <span class="stat-label">Total Autotraders</span>
+                    <span class="stat-value" data-field="autotraders.total"></span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">Active</span>
+                    <span class="stat-value" data-field="autotraders.active"></span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">Stopped</span>
+                    <span class="stat-value" data-field="autotraders.stopped"></span>
+                  </div>
+                </div>
+              </div>
             </section>
           </div>
         </div>
