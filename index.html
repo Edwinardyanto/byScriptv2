@@ -66,32 +66,57 @@
           </header>
         </div>
         <!-- Asset summary: primary overview and high-level totals -->
-        <div class="dashboard-row dashboard-row--full">
-          <section class="section section--primary">
-            <div class="section-header">
-              <h2 class="section-title">Asset Summary</h2>
-            </div>
-            <div class="section-body">
-              <div class="card card--summary">
-                <div class="stat">
-                  <div class="stat-label">Total Balance</div>
-                  <div class="stat-value" data-field="asset.totalBalance"></div>
-                </div>
-                <div class="stat-meta">
-                  <span class="badge badge--positive" data-field="asset.change"></span>
-                  <span class="stat-caption" data-field="asset.changeLabel"></span>
-                </div>
-                <div class="chart-placeholder" data-field="asset.chartLabel">
-                  Chart Placeholder
-                </div>
-                <div class="timeframe-pills" aria-label="Asset summary timeframe">
-                  <span class="timeframe-pill">1D</span>
-                  <span class="timeframe-pill timeframe-pill--active">7D</span>
-                  <span class="timeframe-pill">30D</span>
+        <div class="dashboard-row dashboard-row--split">
+          <div class="dashboard-left">
+            <section class="section section--primary">
+              <div class="section-header">
+                <h2 class="section-title">Asset Summary</h2>
+              </div>
+              <div class="section-body">
+                <div class="card card--summary">
+                  <div class="stat">
+                    <div class="stat-label">Total Balance</div>
+                    <div class="stat-value" data-field="asset.totalBalance"></div>
+                  </div>
+                  <div class="stat-meta">
+                    <span class="badge badge--positive" data-field="asset.change"></span>
+                    <span class="stat-caption" data-field="asset.changeLabel"></span>
+                  </div>
+                  <div class="chart-placeholder" data-field="asset.chartLabel">
+                    Chart Placeholder
+                  </div>
+                  <div class="timeframe-pills" aria-label="Asset summary timeframe">
+                    <span class="timeframe-pill">1D</span>
+                    <span class="timeframe-pill timeframe-pill--active">7D</span>
+                    <span class="timeframe-pill">30D</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          </div>
+          <div class="dashboard-right">
+            <section class="section section--secondary section--autotraders-summary">
+              <div class="section-header">
+                <h2 class="section-title">Autotraders Summary</h2>
+              </div>
+              <div class="section-body">
+                <div class="stats-stack">
+                  <div class="stat-row">
+                    <span class="stat-label">Total Autotraders</span>
+                    <span class="stat-value" data-field="autotraders.total"></span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">Active</span>
+                    <span class="stat-value" data-field="autotraders.active"></span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">Stopped</span>
+                    <span class="stat-value" data-field="autotraders.stopped"></span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
         </div>
         <!-- Middle summary: balances and critical alerts overview -->
         <div class="dashboard-row dashboard-row--split">
@@ -144,27 +169,6 @@
             </section>
           </div>
           <div class="dashboard-right dashboard-right--stack">
-            <section class="section section--secondary">
-              <div class="section-header">
-                <h2 class="section-title">Autotraders Summary</h2>
-              </div>
-              <div class="section-body">
-                <div class="stats-stack">
-                  <div class="stat-row">
-                    <span class="stat-label">Total Autotraders</span>
-                    <span class="stat-value" data-field="autotraders.total"></span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">Active</span>
-                    <span class="stat-value" data-field="autotraders.active"></span>
-                  </div>
-                  <div class="stat-row">
-                    <span class="stat-label">Stopped</span>
-                    <span class="stat-value" data-field="autotraders.stopped"></span>
-                  </div>
-                </div>
-              </div>
-            </section>
             <section class="section section--secondary section--affiliate">
               <div class="section-header">
                 <h2 class="section-title">Become Affiliate</h2>

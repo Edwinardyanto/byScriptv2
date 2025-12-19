@@ -225,6 +225,10 @@ body::after {
   height: 200px;
 }
 
+.section--autotraders-summary {
+  height: 260px;
+}
+
 .section--autotraders {
   height: 220px;
 }
