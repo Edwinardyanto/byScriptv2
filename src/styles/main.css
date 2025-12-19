@@ -19,6 +19,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-sans);
   line-height: 1.5;
+  overflow: hidden;
 }
 
 .sidebar ul {
@@ -30,7 +31,6 @@ body {
   gap: 12px;
 }
 
-/* App layout */
 .app {
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -43,18 +43,18 @@ body {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  min-height: 400px;
+  min-height: 100%;
   padding: 16px;
 }
 
-/* Main content layout */
 .main {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow: auto;
+  min-height: 0;
 }
 
-/* Section rows layout */
 .row {
   display: grid;
   gap: 16px;
@@ -70,6 +70,7 @@ body {
   border-radius: 8px;
   min-height: 120px;
   padding: 16px;
+  width: 100%;
 }
 
 .section--primary {
@@ -78,4 +79,10 @@ body {
 
 .section--secondary {
   min-height: 180px;
+}
+
+@media (max-width: 1024px) {
+  .app {
+    grid-template-columns: 200px 1fr;
+  }
 }
