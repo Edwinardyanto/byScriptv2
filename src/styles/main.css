@@ -23,14 +23,18 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+}
+
 body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
   background: radial-gradient(circle at top, #251c39 0%, #120f1a 55%, #0c0a12 100%);
   color: var(--color-text);
   font-family: var(--font-sans);
   line-height: 1.45;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 body::before {
@@ -111,7 +115,7 @@ body::after {
 .app {
   display: grid;
   grid-template-columns: 240px 1fr;
-  min-height: 100%;
+  height: 100vh;
   gap: var(--gap-outer);
   padding: var(--gap-outer);
   position: relative;
@@ -122,18 +126,20 @@ body::after {
   background: linear-gradient(180deg, rgba(44, 36, 64, 0.96), rgba(14, 12, 20, 0.98));
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 10px 12px;
+  padding: 8px 12px;
   box-shadow: var(--shadow-soft);
   position: sticky;
   top: var(--gap-outer);
+  height: calc(100vh - (var(--gap-outer) * 2));
 }
 
 .main {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  overflow: visible;
+  overflow-y: hidden;
   min-height: 0;
+  height: calc(100vh - (var(--gap-outer) * 2));
 }
 
 .dashboard-row {
@@ -170,8 +176,8 @@ body::after {
   background: linear-gradient(160deg, rgba(38, 32, 52, 0.95), rgba(14, 12, 20, 0.98));
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--radius-lg);
-  min-height: 88px;
-  padding: 10px 16px;
+  min-height: 0;
+  padding: 8px 16px;
   width: 100%;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), inset 0 -14px 24px rgba(6, 4, 10, 0.6),
     0 26px 50px rgba(8, 6, 16, 0.6), 0 0 22px rgba(120, 88, 200, 0.08);
@@ -197,18 +203,24 @@ body::after {
   flex-direction: column;
   gap: 6px;
   margin-top: 4px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .section--header {
-  min-height: 48px;
+  height: 56px;
 }
 
 .section--primary {
-  min-height: 168px;
+  height: 260px;
 }
 
 .section--secondary {
-  min-height: 120px;
+  height: 200px;
+}
+
+.dashboard-row--bottom .section--secondary {
+  height: 170px;
 }
 
 .header-meta {
@@ -240,7 +252,7 @@ body::after {
   gap: 8px;
   background: linear-gradient(160deg, rgba(36, 30, 48, 0.96), rgba(12, 11, 18, 0.98));
   border-radius: var(--radius-md);
-  padding: 8px 14px;
+  padding: 6px 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -12px 22px rgba(6, 4, 10, 0.55),
     0 22px 38px rgba(8, 6, 16, 0.55), 0 0 20px rgba(120, 88, 200, 0.07);
@@ -252,6 +264,8 @@ body::after {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -14px 24px rgba(6, 4, 10, 0.6),
     0 26px 44px rgba(8, 6, 16, 0.58), 0 0 24px rgba(120, 88, 200, 0.1);
   position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 .stat {
@@ -312,7 +326,8 @@ body::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 112px;
+  min-height: 160px;
+  height: 160px;
   border-radius: var(--radius-md);
   border: 1px dashed rgba(255, 255, 255, 0.22);
   background: radial-gradient(circle at 20% 20%, rgba(200, 242, 107, 0.08), transparent 45%),
@@ -324,7 +339,8 @@ body::after {
 }
 
 .card--summary .chart-placeholder {
-  min-height: 108px;
+  min-height: 160px;
+  height: 160px;
 }
 
 .chart-placeholder::after {
@@ -382,12 +398,14 @@ body::after {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 8px;
+  height: 100%;
 }
 
 .summary-list {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow: auto;
 }
 
 .summary-item {
@@ -426,10 +444,12 @@ body::after {
   padding: 6px;
   border: 1px solid rgba(255, 255, 255, 0.06);
   justify-content: center;
+  height: 100%;
 }
 
 .summary-total .chart-placeholder {
-  min-height: 96px;
+  min-height: 120px;
+  height: 120px;
   padding-bottom: 18px;
 }
 
@@ -437,11 +457,12 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 8px 12px;
+  padding: 6px 12px;
   border-radius: var(--radius-md);
   background: linear-gradient(180deg, rgba(92, 35, 35, 0.35), rgba(48, 22, 30, 0.7));
   border: 1px solid rgba(255, 123, 123, 0.25);
   box-shadow: inset 0 0 10px rgba(255, 123, 123, 0.1), 0 0 18px rgba(255, 123, 123, 0.08);
+  height: 100%;
 }
 
 .alert-title {
@@ -487,6 +508,7 @@ body::after {
 .autotraders-list {
   display: grid;
   gap: 4px;
+  overflow: auto;
 }
 
 .autotrader-card {
@@ -538,6 +560,7 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  overflow: auto;
 }
 
 .stat-row {
