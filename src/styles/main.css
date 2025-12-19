@@ -218,7 +218,7 @@ body::after {
 }
 
 .section--primary {
-  height: 260px;
+  height: 300px;
 }
 
 .section--secondary {
@@ -226,7 +226,7 @@ body::after {
 }
 
 .section--autotraders-summary {
-  height: 260px;
+  height: 300px;
 }
 
 .section--autotraders {
