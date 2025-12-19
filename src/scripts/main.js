@@ -1,15 +1,10 @@
 const appRoot = document.getElementById("app");
 
 const state = {
-  header: {
-    context: "Trading Overview",
-    subtitle: "Mock data preview",
-  },
   assetSummary: {
     totalBalance: "$12,430",
     change: "+3.4%",
     changeLabel: "vs last 7 days",
-    chartLabel: "Chart Placeholder",
   },
   exchangesSummary: {
     total: "$21,240",
@@ -56,9 +51,9 @@ const state = {
 };
 
 const setText = (selector, value) => {
-  const el = document.querySelector(selector);
-  if (el) {
-    el.textContent = value;
+  const element = document.querySelector(selector);
+  if (element) {
+    element.textContent = value;
   }
 };
 
@@ -66,7 +61,6 @@ const renderAssetSummary = (data) => {
   setText('[data-field="asset.totalBalance"]', data.totalBalance);
   setText('[data-field="asset.change"]', data.change);
   setText('[data-field="asset.changeLabel"]', data.changeLabel);
-  setText('[data-field="asset.chartLabel"]', data.chartLabel);
 };
 
 const renderExchangesSummary = (data) => {
@@ -126,13 +120,7 @@ const renderAutotradersSummary = (data) => {
   setText('[data-field="autotraders.stopped"]', data.stopped);
 };
 
-const renderHeader = (data) => {
-  setText('[data-field="header.context"]', data.context);
-  setText('[data-field="header.subtitle"]', data.subtitle);
-};
-
 const renderDashboard = () => {
-  renderHeader(state.header);
   renderAssetSummary(state.assetSummary);
   renderExchangesSummary(state.exchangesSummary);
   renderAlerts(state.alerts);
