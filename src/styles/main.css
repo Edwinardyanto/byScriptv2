@@ -30,6 +30,7 @@ body {
   gap: 12px;
 }
 
+/* App layout */
 .app {
   display: grid;
   grid-template-columns: 240px 1fr;
@@ -46,12 +47,14 @@ body {
   padding: 16px;
 }
 
+/* Main content layout */
 .main {
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
 
+/* Section rows layout */
 .row {
   display: grid;
   gap: 16px;
