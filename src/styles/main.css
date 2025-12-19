@@ -33,6 +33,24 @@ body {
   gap: 12px;
 }
 
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.sidebar-label {
+  display: inline-flex;
+  align-items: center;
+}
+
 .app {
   display: grid;
   grid-template-columns: 240px 1fr;
