@@ -6,7 +6,7 @@ export const renderAssetLineChart = (container, series) => {
   }
 
   const width = 600;
-  const height = 200;
+  const height = 190;
   const padding = 12;
   const values = series.map(Number);
   const min = Math.min(...values);
@@ -32,7 +32,7 @@ export const renderAssetLineChart = (container, series) => {
   path.setAttribute("d", d);
   path.setAttribute("fill", "none");
   path.setAttribute("stroke", "#c8f26b");
-  path.setAttribute("stroke-width", "4");
+  path.setAttribute("stroke-width", "5");
   path.setAttribute("stroke-linecap", "round");
   path.setAttribute("stroke-linejoin", "round");
 
@@ -40,7 +40,7 @@ export const renderAssetLineChart = (container, series) => {
   glow.setAttribute("d", d);
   glow.setAttribute("fill", "none");
   glow.setAttribute("stroke", "rgba(200, 242, 107, 0.35)");
-  glow.setAttribute("stroke-width", "10");
+  glow.setAttribute("stroke-width", "12");
   glow.setAttribute("stroke-linecap", "round");
   glow.setAttribute("stroke-linejoin", "round");
 
