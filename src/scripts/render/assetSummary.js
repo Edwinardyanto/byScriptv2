@@ -7,12 +7,9 @@ const setText = (selector, value) => {
   }
 };
 
-const setChartMessage = (container, message) => {
-  if (!container) {
-    return;
-  }
+const clearChart = (container) => {
+  if (!container) return;
   container.innerHTML = "";
-  container.textContent = message;
 };
 
 const updateTimeframeButtons = (activeRange) => {
@@ -25,43 +22,46 @@ const updateTimeframeButtons = (activeRange) => {
 
 export const renderAssetSummary = (sectionState) => {
   const { data, status } = sectionState;
-  const chartContainer = document.querySelector('[data-field="asset.chartLabel"]');
+  const chartContainer = document.querySelector(
+    '[data-field="asset.chartLabel"]'
+  );
 
+  // ===== LOADING =====
   if (status === "loading") {
     setText('[data-field="asset.totalBalance"]', "Loading...");
     setText('[data-field="asset.change"]', "--");
-    setText('[data-field="asset.changeLabel"]', "Loading...");
-    setChartMessage(chartContainer, "Loading chart...");
+    clearChart(chartContainer);
     return;
   }
 
+  // ===== ERROR =====
   if (status === "error") {
     setText('[data-field="asset.totalBalance"]', "--");
     setText('[data-field="asset.change"]', "--");
-    setText('[data-field="asset.changeLabel"]', "Unable to load");
-    setChartMessage(chartContainer, "Chart unavailable");
+    clearChart(chartContainer);
     return;
   }
 
+  // ===== EMPTY =====
   if (!data) {
     setText('[data-field="asset.totalBalance"]', "--");
     setText('[data-field="asset.change"]', "--");
-    setText('[data-field="asset.changeLabel"]', "No data available");
-    setChartMessage(chartContainer, "No chart data");
+    clearChart(chartContainer);
     return;
   }
 
+  // ===== DATA =====
   setText('[data-field="asset.totalBalance"]', data.totalBalance);
   setText('[data-field="asset.change"]', data.change);
-  setText('[data-field="asset.changeLabel"]', data.changeLabel);
 
   const activeRange = data.chart?.activeRange || "7D";
   updateTimeframeButtons(activeRange);
 
   const series = data.chart?.ranges?.[activeRange] || [];
-  if (series.length === 0) {
-    setChartMessage(chartContainer, "No chart data");
-  } else {
+
+  clearChart(chartContainer);
+
+  if (series.length > 0) {
     renderAssetLineChart(chartContainer, series);
   }
 };
