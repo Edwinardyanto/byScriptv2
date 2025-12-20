@@ -277,10 +277,10 @@ body::after {
 }
 
 .card--summary {
-  background: linear-gradient(160deg, rgba(40, 33, 56, 0.96), rgba(12, 10, 18, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -10px 22px rgba(6, 4, 10, 0.5),
-    0 18px 36px rgba(8, 6, 16, 0.45), 0 0 20px rgba(120, 88, 200, 0.08);
+  background: linear-gradient(165deg, rgba(36, 30, 52, 0.95), rgba(10, 9, 16, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -16px 26px rgba(4, 3, 7, 0.6),
+    0 16px 30px rgba(7, 6, 14, 0.35);
   position: relative;
   flex: 1;
   min-height: 0;
@@ -298,7 +298,7 @@ body::after {
 
 .card--summary .asset-summary-header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
 }
@@ -307,6 +307,35 @@ body::after {
   position: static;
   transform: none;
   margin-left: 0;
+  margin-top: 4px;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.card--summary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: radial-gradient(circle at 15% 20%, rgba(120, 88, 200, 0.22), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(200, 242, 107, 0.12), transparent 42%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.card--summary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.16'/%3E%3C/svg%3E");
+  opacity: 0.22;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+.card--summary > * {
+  position: relative;
+  z-index: 1;
 }
 
 .stat {
@@ -317,7 +346,7 @@ body::after {
 
 .stat-value-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
 }
 
@@ -331,22 +360,27 @@ body::after {
   font-size: 2rem;
   font-weight: 600;
   color: var(--color-text);
-}
-
-.stat-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  line-height: 1;
 }
 
 .stat-caption {
-  font-size: 0.8rem;
-  color: var(--color-muted);
+  font-size: 0.72rem;
+  color: rgba(182, 176, 200, 0.6);
   line-height: 1.1;
 }
 
-.section--primary .stat-caption {
-  display: none;
+.card--summary .stat-change {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.section--primary .section-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(182, 176, 200, 0.7);
 }
 
 .badge {
@@ -366,6 +400,16 @@ body::after {
 .badge--positive {
   background: rgba(200, 242, 107, 0.2);
   color: var(--color-accent);
+}
+
+.card--summary .badge--positive {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  background: rgba(200, 242, 107, 0.16);
+  box-shadow: inset 0 0 8px rgba(200, 242, 107, 0.2), 0 0 12px rgba(200, 242, 107, 0.18);
 }
 
 .badge--warning {
@@ -394,6 +438,11 @@ body::after {
   height: 144px;
   border: none;
   background: transparent;
+  color: transparent;
+}
+
+.card--summary .chart-placeholder::after {
+  display: none;
 }
 
 .chart-placeholder::after {
@@ -437,11 +486,23 @@ body::after {
   box-shadow: inset 0 0 10px rgba(6, 4, 10, 0.6);
 }
 
+.card--summary .timeframe-pill {
+  border: none;
+  background: rgba(14, 12, 20, 0.6);
+  color: rgba(182, 176, 200, 0.65);
+  box-shadow: none;
+}
+
 .timeframe-pill--active {
   color: var(--color-text);
   background: rgba(200, 242, 107, 0.22);
   border-color: rgba(200, 242, 107, 0.45);
   box-shadow: inset 0 0 10px rgba(200, 242, 107, 0.25), 0 0 16px rgba(200, 242, 107, 0.25);
+}
+
+.card--summary .timeframe-pill--active {
+  background: rgba(200, 242, 107, 0.2);
+  box-shadow: inset 0 0 10px rgba(200, 242, 107, 0.2), 0 0 12px rgba(200, 242, 107, 0.2);
 }
 
 .chart-placeholder svg {

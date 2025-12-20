@@ -79,16 +79,16 @@
                       <div class="asset-summary-header">
                         <div class="stat-value-row">
                           <div class="stat-value" data-field="asset.totalBalance"></div>
-                          <span class="badge badge--positive" data-field="asset.change"></span>
+                          <div class="stat-change">
+                            <span class="badge badge--positive" data-field="asset.change"></span>
+                            <span class="stat-caption" data-field="asset.changeLabel"></span>
+                          </div>
                         </div>
                         <div class="timeframe-pills" aria-label="Asset summary timeframe">
                           <span class="timeframe-pill">1D</span>
                           <span class="timeframe-pill timeframe-pill--active">7D</span>
                           <span class="timeframe-pill">30D</span>
                         </div>
-                      </div>
-                      <div class="stat-meta">
-                        <span class="stat-caption" data-field="asset.changeLabel"></span>
                       </div>
                     </div>
                   </div>
