@@ -292,6 +292,12 @@ body::after {
 
 .card--summary .summary-top {
   display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.card--summary .asset-summary-header {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -300,7 +306,7 @@ body::after {
 .card--summary .timeframe-pills {
   position: static;
   transform: none;
-  margin-left: auto;
+  margin-left: 0;
 }
 
 .stat {
