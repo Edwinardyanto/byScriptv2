@@ -1,161 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>byScript – Asset Summary</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Font (optional tapi recommended) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg-dark: #0e0e14;
-      --text-primary: #ffffff;
-      --text-muted: rgba(255,255,255,0.55);
-      --accent-green: #C8FF63;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg-dark);
-      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont;
-      color: var(--text-primary);
-    }
-
-    /* ===== Asset Summary Section ===== */
-    .asset-summary {
-      position: relative;
-      margin: 40px;
-      padding: 28px;
-      border-radius: 20px;
-      overflow: hidden;
-
-      /* background image (OPTION A) */
-      background-image: url("./assets/images/asset-summary-bg.png");
-      background-size: cover;
-      background-position: center;
-    }
-
-    /* overlay supaya teks kebaca */
-    .asset-summary::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(10,10,18,0.55),
-        rgba(10,10,18,0.35)
-      );
-      pointer-events: none;
-    }
-
-    .asset-summary-content {
-      position: relative;
-      z-index: 2;
-    }
-
-    .asset-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 18px;
-    }
-
-    .asset-title {
-      font-size: 14px;
-      letter-spacing: 0.4px;
-      color: var(--text-muted);
-    }
-
-    .range-toggle {
-      display: flex;
-      gap: 6px;
-      background: rgba(255,255,255,0.06);
-      padding: 6px;
-      border-radius: 999px;
-    }
-
-    .range-toggle span {
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .range-toggle .active {
-      background: rgba(200,255,99,0.2);
-      color: var(--accent-green);
-    }
-
-    .asset-stats {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-
-    .asset-value {
-      font-size: 40px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-
-    .asset-change {
-      font-size: 14px;
-      font-weight: 600;
-      padding: 6px 12px;
-      border-radius: 999px;
-      background: rgba(200,255,99,0.2);
-      color: var(--accent-green);
-    }
-
-    /* Chart container */
-    #asset-summary-chart {
-      width: 100%;
-      height: 260px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <section class="asset-summary">
-    <div class="asset-summary-content">
-
-      <div class="asset-header">
-        <div class="asset-title">Asset Summary</div>
-
-        <div class="range-toggle">
-          <span>1D</span>
-          <span class="active">7D</span>
-          <span>30D</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trading Dashboard</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <aside>
+        <nav class="sidebar" aria-label="Primary">
+          <ul>
+            <li>
+              <div class="sidebar-item sidebar-item--active">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Dashboard</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Autotraders</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Exchanges</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Activity</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Strategy Backtest</span>
+              </div>
+            </li>
+            <li>
+              <div class="sidebar-item">
+                <span class="sidebar-icon"></span>
+                <span class="sidebar-label">Affiliate</span>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <main class="main">
+        <!-- Header: global dashboard context and title area -->
+        <div class="dashboard-row dashboard-row--full">
+          <header class="section section--header">
+            <div class="section-header">
+              <h1 class="section-title">Dashboard</h1>
+            </div>
+            <div class="section-body">
+              <div class="header-meta">
+                <span class="pill" data-field="header.context"></span>
+                <span class="header-subtitle" data-field="header.subtitle"></span>
+              </div>
+            </div>
+          </header>
         </div>
-      </div>
-
-      <div class="asset-stats">
-        <div class="asset-value">$12,430</div>
-        <div class="asset-change">+3.4%</div>
-      </div>
-
-      <div id="asset-summary-chart"></div>
-
+        <!-- Asset summary: primary overview and high-level totals -->
+        <div class="dashboard-row dashboard-row--split">
+          <div class="dashboard-left">
+            <section class="section section--primary">
+              <div class="section-header">
+                <h2 class="section-title">Asset Summary</h2>
+              </div>
+              <div class="section-body">
+                <div class="asset-summary-bg"></div>
+                <div class="asset-summary-content">
+                  <div class="card card--summary">
+                    <div class="summary-top">
+                      <div class="stat">
+                        <div class="asset-summary-header">
+                          <div class="stat-value-row">
+                            <div class="stat-value" data-field="asset.totalBalance"></div>
+                            <span class="badge badge--positive" data-field="asset.change"></span>
+                          </div>
+                          <div class="timeframe-pills" aria-label="Asset summary timeframe">
+                            <span class="timeframe-pill">1D</span>
+                            <span class="timeframe-pill timeframe-pill--active">7D</span>
+                            <span class="timeframe-pill">30D</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="chart-placeholder" data-field="asset.chartLabel">
+                      Chart Placeholder
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="dashboard-right">
+            <section class="section section--secondary section--autotraders-summary">
+              <div class="section-header">
+                <h2 class="section-title">Autotraders Summary</h2>
+              </div>
+              <div class="section-body">
+                <div class="stats-stack">
+                  <div class="stat-row">
+                    <span class="stat-label">Total Autotraders</span>
+                    <span class="stat-value" data-field="autotraders.total"></span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">Active</span>
+                    <span class="stat-value" data-field="autotraders.active"></span>
+                  </div>
+                  <div class="stat-row">
+                    <span class="stat-label">Stopped</span>
+                    <span class="stat-value" data-field="autotraders.stopped"></span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <!-- Middle summary: balances and critical alerts overview -->
+        <div class="dashboard-row dashboard-row--split">
+          <div class="dashboard-left">
+            <section class="section section--secondary">
+              <div class="section-header">
+                <h2 class="section-title">Exchanges Summary</h2>
+              </div>
+              <div class="section-body">
+                <div class="summary-grid">
+                  <div class="summary-list" data-list="exchanges"></div>
+                  <div class="summary-total">
+                    <div class="stat-label">Total Balance</div>
+                    <div class="stat-value" data-field="exchanges.total"></div>
+                    <div class="chart-placeholder">Chart Placeholder</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="dashboard-right">
+            <section class="section section--secondary">
+              <div class="section-header">
+                <h2 class="section-title">Alerts</h2>
+              </div>
+              <div class="section-body">
+                <div class="alert-card">
+                  <div class="alert-title" data-field="alerts.title"></div>
+                  <div class="alert-message" data-field="alerts.message"></div>
+                  <div class="alert-meta">
+                    <span class="badge badge--warning" data-field="alerts.type"></span>
+                    <span class="alert-time" data-field="alerts.time"></span>
+                  </div>
+                  <button class="button button--ghost" type="button" data-field="alerts.cta"></button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+        <!-- Bottom summary: top strategies and affiliate callout -->
+        <div class="dashboard-row dashboard-row--split dashboard-row--bottom">
+          <div class="dashboard-left">
+            <section class="section section--secondary section--autotraders">
+              <div class="section-header">
+                <h2 class="section-title">Top Autotraders</h2>
+              </div>
+              <div class="section-body">
+                <div class="autotraders-list" data-list="topAutotraders"></div>
+              </div>
+            </section>
+          </div>
+          <div class="dashboard-right dashboard-right--stack">
+            <section class="section section--secondary section--affiliate">
+              <div class="section-header">
+                <h2 class="section-title">Become Affiliate</h2>
+              </div>
+              <div class="section-body">
+                <div class="affiliate-card">
+                  <p class="affiliate-description">
+                    Earn commissions by referring new users to our platform.
+                  </p>
+                  <button class="button" type="button">Start Earning</button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
     </div>
-  </section>
-
-  <!-- Chart logic -->
-  <script type="module">
-    import { renderAssetSummaryChart } from "./src/assetSummaryChart.js";
-
-    renderAssetSummaryChart({
-      containerId: "asset-summary-chart",
-      data: [12000, 12350, 12210, 12580, 12800, 12940, 13020]
-    });
-  </script>
-
-</body>
+    <script type="module" src="src/scripts/main.js"></script>
+  </body>
 </html>
