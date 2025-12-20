@@ -345,6 +345,10 @@ body::after {
   line-height: 1.1;
 }
 
+.section--primary .stat-caption {
+  display: none;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
