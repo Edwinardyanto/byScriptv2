@@ -278,9 +278,9 @@ body::after {
 
 .card--summary {
   background: linear-gradient(160deg, rgba(40, 33, 56, 0.96), rgba(12, 10, 18, 0.98));
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -14px 24px rgba(6, 4, 10, 0.6),
-    0 26px 44px rgba(8, 6, 16, 0.58), 0 0 24px rgba(120, 88, 200, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), inset 0 -10px 22px rgba(6, 4, 10, 0.5),
+    0 18px 36px rgba(8, 6, 16, 0.45), 0 0 20px rgba(120, 88, 200, 0.08);
   position: relative;
   flex: 1;
   min-height: 0;
@@ -290,18 +290,17 @@ body::after {
   display: none;
 }
 
-.card--summary .chart-wrapper {
-  position: relative;
-  padding-top: 34px;
+.card--summary .summary-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .card--summary .timeframe-pills {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: auto;
-  bottom: auto;
+  position: static;
   transform: none;
+  margin-left: auto;
 }
 
 .stat {
@@ -384,6 +383,7 @@ body::after {
   min-height: 144px;
   height: 144px;
   border: none;
+  background: transparent;
 }
 
 .chart-placeholder::after {
