@@ -215,7 +215,7 @@ body::after {
 
 .section--primary .section-body {
   position: relative;
-  overflow: visible; /* allow tooltip float */
+  overflow: hidden;
 }
 
 .asset-summary-bg {
@@ -448,8 +448,6 @@ body::after {
   background: transparent;
   color: transparent;
   padding-bottom: 0;
-  position: relative;
-  overflow: visible;
 }
 
 .card--summary .chart-placeholder::after {
@@ -518,18 +516,7 @@ body::after {
 
 .chart-placeholder svg {
   filter: drop-shadow(0 0 12px rgba(200, 242, 107, 0.25));
-  overflow: visible;
-  pointer-events: all;
 }
-
-.chart-placeholder svg path {
-  transition: stroke-width 0.25s ease, opacity 0.25s ease;
-}
-
-.chart-placeholder svg:hover path {
-  stroke-width: 4.5;
-}
-
 .summary-grid {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
