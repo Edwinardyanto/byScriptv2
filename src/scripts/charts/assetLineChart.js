@@ -1,154 +1,141 @@
 const NS = "http://www.w3.org/2000/svg";
-const createSvgElement = (tag) => document.createElementNS(NS, tag);
+const create = (tag) => document.createElementNS(NS, tag);
 
 export const renderAssetLineChart = (container, series) => {
-  if (!container || !Array.isArray(series) || series.length === 0) {
-    return;
-  }
+  if (!container || !Array.isArray(series) || series.length === 0) return;
 
-  // ===== CONFIG =====
-  const width = 600;
-  const height = 190;
-  const padding = 16;
+  const width = 640;
+  const height = 180;
+  const padding = { top: 16, right: 16, bottom: 24, left: 16 };
 
   const values = series.map(Number);
   const min = Math.min(...values);
   const max = Math.max(...values);
   const range = max - min || 1;
 
-  // ===== SVG ROOT =====
-  const svg = createSvgElement("svg");
+  const svg = create("svg");
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   svg.setAttribute("width", "100%");
   svg.setAttribute("height", "100%");
   svg.style.overflow = "visible";
 
-  // ===== BASELINE (Y reference) =====
-  const baseline = createSvgElement("line");
-  baseline.setAttribute("x1", padding);
-  baseline.setAttribute("x2", width - padding);
-  baseline.setAttribute("y1", height - padding);
-  baseline.setAttribute("y2", height - padding);
-  baseline.setAttribute("stroke", "rgba(255,255,255,0.06)");
-  baseline.setAttribute("stroke-width", "1");
+  /* =========================
+     Y SCALE (REFERENCE LINE)
+  ========================== */
+  const yLine = create("line");
+  yLine.setAttribute("x1", padding.left);
+  yLine.setAttribute("x2", width - padding.right);
+  yLine.setAttribute("y1", height - padding.bottom);
+  yLine.setAttribute("y2", height - padding.bottom);
+  yLine.setAttribute("stroke", "rgba(255,255,255,0.15)");
+  yLine.setAttribute("stroke-dasharray", "4 6");
+  svg.appendChild(yLine);
 
-  svg.appendChild(baseline);
+  /* =========================
+     LINE PATH
+  ========================== */
+  const step =
+    (width - padding.left - padding.right) / (values.length - 1);
 
-  // ===== PATH DATA =====
-  const step = (width - padding * 2) / (values.length - 1 || 1);
-  const points = values.map((value, index) => {
-    const x = padding + index * step;
+  const points = values.map((v, i) => {
+    const x = padding.left + i * step;
     const y =
       height -
-      padding -
-      ((value - min) / range) * (height - padding * 2);
-    return { x, y, value };
+      padding.bottom -
+      ((v - min) / range) * (height - padding.top - padding.bottom);
+    return { x, y, v };
   });
 
   const d = points
-    .map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`)
+    .map((p, i) => `${i === 0 ? "M" : "L"}${p.x} ${p.y}`)
     .join(" ");
 
-  // ===== GLOW PATH =====
-  const glow = createSvgElement("path");
+  const glow = create("path");
   glow.setAttribute("d", d);
   glow.setAttribute("fill", "none");
-  glow.setAttribute("stroke", "rgba(200, 242, 107, 0.25)");
+  glow.setAttribute("stroke", "rgba(200,242,107,0.35)");
   glow.setAttribute("stroke-width", "12");
   glow.setAttribute("stroke-linecap", "round");
-  glow.setAttribute("stroke-linejoin", "round");
 
-  // ===== MAIN PATH =====
-  const path = createSvgElement("path");
+  const path = create("path");
   path.setAttribute("d", d);
   path.setAttribute("fill", "none");
   path.setAttribute("stroke", "#c8f26b");
-  path.setAttribute("stroke-width", "4.5");
+  path.setAttribute("stroke-width", "4");
   path.setAttribute("stroke-linecap", "round");
   path.setAttribute("stroke-linejoin", "round");
 
   svg.appendChild(glow);
   svg.appendChild(path);
 
-  // ===== HOVER LINE =====
-  const hoverLine = createSvgElement("line");
-  hoverLine.setAttribute("y1", padding);
-  hoverLine.setAttribute("y2", height - padding);
-  hoverLine.setAttribute("stroke", "rgba(255,255,255,0.18)");
+  /* =========================
+     HOVER ELEMENTS
+  ========================== */
+  const hoverLine = create("line");
+  hoverLine.setAttribute("y1", padding.top);
+  hoverLine.setAttribute("y2", height - padding.bottom);
+  hoverLine.setAttribute("stroke", "rgba(255,255,255,0.2)");
   hoverLine.setAttribute("stroke-width", "1");
-  hoverLine.style.display = "none";
+  hoverLine.style.opacity = "0";
 
-  // ===== HOVER DOT =====
-  const hoverDot = createSvgElement("circle");
-  hoverDot.setAttribute("r", "4");
-  hoverDot.setAttribute("fill", "#c8f26b");
-  hoverDot.setAttribute(
-    "filter",
-    "drop-shadow(0 0 6px rgba(200,242,107,0.6))"
-  );
-  hoverDot.style.display = "none";
+  const dot = create("circle");
+  dot.setAttribute("r", "5");
+  dot.setAttribute("fill", "#c8f26b");
+  dot.style.opacity = "0";
 
-  svg.appendChild(hoverLine);
-  svg.appendChild(hoverDot);
-
-  // ===== INTERACTION LAYER =====
-  const interactionLayer = createSvgElement("rect");
-  interactionLayer.setAttribute("x", padding);
-  interactionLayer.setAttribute("y", padding);
-  interactionLayer.setAttribute("width", width - padding * 2);
-  interactionLayer.setAttribute("height", height - padding * 2);
-  interactionLayer.setAttribute("fill", "transparent");
-  interactionLayer.style.cursor = "crosshair";
-
-  svg.appendChild(interactionLayer);
-
-  // ===== TOOLTIP (HTML overlay) =====
   const tooltip = document.createElement("div");
   tooltip.style.position = "absolute";
   tooltip.style.pointerEvents = "none";
-  tooltip.style.padding = "4px 8px";
+  tooltip.style.padding = "6px 10px";
+  tooltip.style.borderRadius = "10px";
   tooltip.style.fontSize = "12px";
-  tooltip.style.borderRadius = "6px";
-  tooltip.style.background = "rgba(18,15,26,0.85)";
-  tooltip.style.color = "#e8e3f3";
+  tooltip.style.fontWeight = "600";
+  tooltip.style.background = "rgba(20,18,30,0.9)";
   tooltip.style.border = "1px solid rgba(255,255,255,0.12)";
-  tooltip.style.backdropFilter = "blur(6px)";
+  tooltip.style.color = "#fff";
+  tooltip.style.boxShadow = "0 10px 24px rgba(0,0,0,0.4)";
   tooltip.style.opacity = "0";
-  tooltip.style.transform = "translate(-50%, -100%)";
-  tooltip.style.transition = "opacity 0.12s ease";
+  tooltip.style.transform = "translate(-50%, -120%)";
+
+  svg.appendChild(hoverLine);
+  svg.appendChild(dot);
 
   container.style.position = "relative";
+  container.appendChild(svg);
   container.appendChild(tooltip);
 
-  // ===== HOVER LOGIC =====
-  interactionLayer.addEventListener("mousemove", (e) => {
+  /* =========================
+     INTERACTION
+  ========================== */
+  svg.addEventListener("mousemove", (e) => {
     const rect = svg.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
+    const x = e.clientX - rect.left;
 
-    const index = Math.round((mouseX - padding) / step);
-    const point = points[Math.max(0, Math.min(points.length - 1, index))];
+    const index = Math.round(
+      (x - padding.left) / step
+    );
 
-    hoverLine.setAttribute("x1", point.x);
-    hoverLine.setAttribute("x2", point.x);
-    hoverLine.style.display = "block";
+    if (index < 0 || index >= points.length) return;
 
-    hoverDot.setAttribute("cx", point.x);
-    hoverDot.setAttribute("cy", point.y);
-    hoverDot.style.display = "block";
+    const p = points[index];
 
-    tooltip.textContent = `$${point.value.toLocaleString()}`;
-    tooltip.style.left = `${point.x}px`;
-    tooltip.style.top = `${point.y}px`;
+    hoverLine.setAttribute("x1", p.x);
+    hoverLine.setAttribute("x2", p.x);
+    hoverLine.style.opacity = "1";
+
+    dot.setAttribute("cx", p.x);
+    dot.setAttribute("cy", p.y);
+    dot.style.opacity = "1";
+
+    tooltip.textContent = `$${p.v.toLocaleString()}`;
+    tooltip.style.left = `${p.x}px`;
+    tooltip.style.top = `${p.y}px`;
     tooltip.style.opacity = "1";
   });
 
-  interactionLayer.addEventListener("mouseleave", () => {
-    hoverLine.style.display = "none";
-    hoverDot.style.display = "none";
+  svg.addEventListener("mouseleave", () => {
+    hoverLine.style.opacity = "0";
+    dot.style.opacity = "0";
     tooltip.style.opacity = "0";
   });
-
-  // ===== MOUNT =====
-  container.innerHTML = "";
-  container.appendChild(svg);
 };
