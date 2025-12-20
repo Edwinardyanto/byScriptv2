@@ -218,15 +218,15 @@ body::after {
 }
 
 .section--primary {
-  height: 400px;
+  height: 300px;
 }
 
 .section--secondary {
-  height: 250px;
+  height: 200px;
 }
 
 .section--autotraders-summary {
-  height: 400px;
+  height: 300px;
 }
 
 .section--autotraders {
@@ -238,7 +238,7 @@ body::after {
 }
 
 .dashboard-row--bottom .section--secondary {
-  height: 210px;
+  height: 170px;
 }
 
 .header-meta {
@@ -286,10 +286,34 @@ body::after {
   min-height: 0;
 }
 
+.card--summary .stat-label {
+  display: none;
+}
+
+.card--summary .chart-wrapper {
+  position: relative;
+  padding-top: 34px;
+}
+
+.card--summary .timeframe-pills {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: auto;
+  bottom: auto;
+  transform: none;
+}
+
 .stat {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.stat-value-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .stat-label {
@@ -359,6 +383,7 @@ body::after {
 .card--summary .chart-placeholder {
   min-height: 144px;
   height: 144px;
+  border: none;
 }
 
 .chart-placeholder::after {
