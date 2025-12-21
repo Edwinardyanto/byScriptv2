@@ -1,5 +1,29 @@
 const createSvgElement = (tag) => document.createElementNS("http://www.w3.org/2000/svg", tag);
 
+const buildLabelIndices = (length, count) => {
+  if (length <= 1 || count <= 1) {
+    return [0];
+  }
+  const indices = new Set();
+  for (let i = 0; i < count; i += 1) {
+    indices.add(Math.round((i * (length - 1)) / (count - 1)));
+  }
+  return Array.from(indices).sort((a, b) => a - b);
+};
+
+const getLabelIndices = (length) => {
+  if (length === 7) {
+    return [0, 3, 6];
+  }
+  if (length === 30) {
+    return buildLabelIndices(length, 5);
+  }
+  if (length === 90) {
+    return buildLabelIndices(length, 4);
+  }
+  return buildLabelIndices(length, 3);
+};
+
 export const renderAssetLineChart = (container, series) => {
   if (!container || !Array.isArray(series) || series.length === 0) {
     return;
@@ -7,11 +31,11 @@ export const renderAssetLineChart = (container, series) => {
 
   const width = 600;
   const plotHeight = 190;
-  const labelOffset = 10;
-  const height = plotHeight + labelOffset;
-  const paddingTop = 12;
-  const paddingBottom = 4;
+  const plotTop = 12;
+  const labelZoneHeight = 18;
   const paddingX = 18;
+  const height = plotTop + plotHeight + labelZoneHeight;
+  const baselineY = plotTop + plotHeight;
   const values = series.map(Number);
   const min = Math.min(...values);
   const max = Math.max(...values);
@@ -22,56 +46,44 @@ export const renderAssetLineChart = (container, series) => {
   svg.setAttribute("width", "100%");
   svg.setAttribute("height", "100%");
 
-  const step = (width - paddingX * 2) / (values.length - 1 || 1);
+  const stepX = (width - paddingX * 2) / (values.length - 1 || 1);
   const points = values.map((value, index) => {
-    const x = paddingX + index * step;
-    const y =
-      plotHeight - paddingBottom - ((value - min) / range) * (plotHeight - paddingTop - paddingBottom);
+    const x = paddingX + index * stepX;
+    const y = baselineY - ((value - min) / range) * plotHeight;
     return { x, y };
   });
-  const d = points
+
+  const pathData = points
     .map((point, index) => `${index === 0 ? "M" : "L"}${point.x} ${point.y}`)
     .join(" ");
 
   const baseline = createSvgElement("line");
   baseline.setAttribute("x1", paddingX);
   baseline.setAttribute("x2", width - paddingX);
-  const baselineY = plotHeight - paddingBottom;
   baseline.setAttribute("y1", baselineY);
   baseline.setAttribute("y2", baselineY);
   baseline.setAttribute("stroke", "rgba(255, 255, 255, 0.16)");
   baseline.setAttribute("stroke-width", "1");
   baseline.setAttribute("stroke-dasharray", "4 6");
 
-  const anchorLine = createSvgElement("line");
-  const anchorWidth = (width - paddingX * 2) * 0.75;
-  const anchorX = (width - anchorWidth) / 2;
-  const anchorY = height - 4;
-  anchorLine.setAttribute("x1", anchorX);
-  anchorLine.setAttribute("x2", anchorX + anchorWidth);
-  anchorLine.setAttribute("y1", anchorY);
-  anchorLine.setAttribute("y2", anchorY);
-  anchorLine.setAttribute("stroke", "rgba(255, 255, 255, 0.08)");
-  anchorLine.setAttribute("stroke-width", "1");
-
   const glow = createSvgElement("path");
-  glow.setAttribute("d", d);
+  glow.setAttribute("d", pathData);
   glow.setAttribute("fill", "none");
   glow.setAttribute("stroke", "rgba(200, 242, 107, 0.35)");
   glow.setAttribute("stroke-width", "12");
   glow.setAttribute("stroke-linecap", "round");
   glow.setAttribute("stroke-linejoin", "round");
 
-  const path = createSvgElement("path");
-  path.setAttribute("d", d);
-  path.setAttribute("fill", "none");
-  path.setAttribute("stroke", "#c8f26b");
-  path.setAttribute("stroke-width", "5");
-  path.setAttribute("stroke-linecap", "round");
-  path.setAttribute("stroke-linejoin", "round");
+  const line = createSvgElement("path");
+  line.setAttribute("d", pathData);
+  line.setAttribute("fill", "none");
+  line.setAttribute("stroke", "#c8f26b");
+  line.setAttribute("stroke-width", "5");
+  line.setAttribute("stroke-linecap", "round");
+  line.setAttribute("stroke-linejoin", "round");
 
   const hoverLine = createSvgElement("line");
-  hoverLine.setAttribute("y1", paddingTop);
+  hoverLine.setAttribute("y1", plotTop);
   hoverLine.setAttribute("y2", baselineY);
   hoverLine.setAttribute("stroke", "rgba(255, 255, 255, 0.2)");
   hoverLine.setAttribute("stroke-width", "1");
@@ -86,9 +98,9 @@ export const renderAssetLineChart = (container, series) => {
   hoverDot.style.opacity = "0";
 
   const overlay = createSvgElement("rect");
-  overlay.setAttribute("x", "0");
-  overlay.setAttribute("y", "0");
-  overlay.setAttribute("width", width);
+  overlay.setAttribute("x", paddingX);
+  overlay.setAttribute("y", plotTop);
+  overlay.setAttribute("width", width - paddingX * 2);
   overlay.setAttribute("height", plotHeight);
   overlay.setAttribute("fill", "transparent");
 
@@ -103,21 +115,12 @@ export const renderAssetLineChart = (container, series) => {
     return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
   };
 
-  const labelIndices = (() => {
-    if (values.length === 7) {
-      return [0, 3, 6];
-    }
-    if (values.length === 30) {
-      return [0, 6, 13, 20, 27];
-    }
-    if (values.length === 90) {
-      return [0, 29, 59, 89];
-    }
-    return [0, Math.floor(values.length / 2), values.length - 1];
-  })();
-
+  const labelIndices = getLabelIndices(values.length);
   labelIndices.forEach((index) => {
     const point = points[index];
+    if (!point) {
+      return;
+    }
     const label = createSvgElement("text");
     label.setAttribute("x", point.x);
     label.setAttribute("y", labelY);
@@ -126,30 +129,6 @@ export const renderAssetLineChart = (container, series) => {
     label.setAttribute("text-anchor", "middle");
     label.textContent = formatLabelDate(index);
     labelGroup.appendChild(label);
-  });
-
-  const contextValueLeft = createSvgElement("text");
-  contextValueLeft.setAttribute("x", points[0].x);
-  contextValueLeft.setAttribute(
-    "y",
-    Math.max(points[0].y - 10, paddingTop + 10)
-  );
-  contextValueLeft.setAttribute("fill", "rgba(255, 255, 255, 0.4)");
-  contextValueLeft.setAttribute("font-size", "11");
-  contextValueLeft.setAttribute("text-anchor", "start");
-  contextValueLeft.textContent = values[0].toLocaleString(undefined, { maximumFractionDigits: 2 });
-
-  const contextValueRight = createSvgElement("text");
-  contextValueRight.setAttribute("x", points[points.length - 1].x);
-  contextValueRight.setAttribute(
-    "y",
-    Math.max(points[points.length - 1].y - 10, paddingTop + 10)
-  );
-  contextValueRight.setAttribute("fill", "rgba(255, 255, 255, 0.4)");
-  contextValueRight.setAttribute("font-size", "11");
-  contextValueRight.setAttribute("text-anchor", "end");
-  contextValueRight.textContent = values[values.length - 1].toLocaleString(undefined, {
-    maximumFractionDigits: 2,
   });
 
   const tooltip = document.createElement("div");
@@ -171,11 +150,8 @@ export const renderAssetLineChart = (container, series) => {
   container.style.position = "relative";
   container.appendChild(tooltip);
   svg.appendChild(baseline);
-  svg.appendChild(anchorLine);
   svg.appendChild(glow);
-  svg.appendChild(path);
-  svg.appendChild(contextValueLeft);
-  svg.appendChild(contextValueRight);
+  svg.appendChild(line);
   svg.appendChild(labelGroup);
   svg.appendChild(hoverLine);
   svg.appendChild(hoverDot);
@@ -191,11 +167,13 @@ export const renderAssetLineChart = (container, series) => {
     const clampedX = Math.min(Math.max(relativeX, paddingX), width - paddingX);
     const index = Math.min(
       points.length - 1,
-      Math.max(0, Math.round((clampedX - paddingX) / step))
+      Math.max(0, Math.round((clampedX - paddingX) / stepX))
     );
     const point = points[index];
     const value = values[index];
-    const tooltipText = value.toLocaleString(undefined, { maximumFractionDigits: 2 });
+    if (!point) {
+      return;
+    }
     hoverLine.setAttribute("x1", point.x);
     hoverLine.setAttribute("x2", point.x);
     hoverDot.setAttribute("cx", point.x);
@@ -203,15 +181,21 @@ export const renderAssetLineChart = (container, series) => {
     hoverLine.style.opacity = "1";
     hoverDot.style.opacity = "1";
 
-    tooltip.textContent = tooltipText;
+    tooltip.textContent = value.toLocaleString(undefined, { maximumFractionDigits: 2 });
     tooltip.style.opacity = "1";
     const tooltipWidth = tooltip.offsetWidth;
     const tooltipHeight = tooltip.offsetHeight;
     const xPx = (point.x / width) * rect.width;
     const yPx = (point.y / height) * rect.height;
-    const clampedLeft = Math.min(Math.max(xPx - tooltipWidth / 2, 0), rect.width - tooltipWidth);
+    const clampedLeft = Math.min(
+      Math.max(xPx - tooltipWidth / 2, 0),
+      rect.width - tooltipWidth
+    );
     const offsetY = 12;
-    const clampedTop = Math.min(Math.max(yPx - tooltipHeight - offsetY, 0), rect.height - tooltipHeight);
+    const clampedTop = Math.min(
+      Math.max(yPx - tooltipHeight - offsetY, 0),
+      rect.height - tooltipHeight
+    );
     tooltip.style.left = `${clampedLeft}px`;
     tooltip.style.top = `${clampedTop}px`;
   };
