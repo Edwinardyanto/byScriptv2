@@ -451,7 +451,9 @@ body::after {
   background: transparent;
   color: transparent;
   padding-bottom: 0;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
+  margin-top: auto;
+  display: flex;
   align-items: flex-end;
   overflow: hidden;
 }
