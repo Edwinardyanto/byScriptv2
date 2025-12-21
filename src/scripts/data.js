@@ -1,3 +1,12 @@
+const buildSeries = (points, start, end) => {
+  const trend = (end - start) / Math.max(points - 1, 1);
+  return Array.from({ length: points }, (_, index) => {
+    const base = start + trend * index;
+    const variance = Math.sin(index / 3.5) * 140 + Math.sin(index / 11) * 70;
+    return Math.round(base + variance);
+  });
+};
+
 export const dashboardData = {
   assetSummary: {
     totalBalance: "$12,430",
@@ -6,9 +15,9 @@ export const dashboardData = {
     chart: {
       activeRange: "7D",
       ranges: {
-        "1D": [11800, 11950, 12120, 12040, 12180, 12310, 12430],
-        "7D": [10250, 10890, 10640, 11220, 11550, 11880, 12430],
-        "30D": [8200, 8700, 9100, 9800, 10400, 11150, 12000, 12430],
+        "7D": buildSeries(7, 10250, 12430),
+        "30D": buildSeries(30, 8200, 12430),
+        "90D": buildSeries(90, 6800, 12430),
       },
     },
   },
