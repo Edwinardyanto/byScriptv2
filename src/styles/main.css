@@ -308,6 +308,8 @@ body::after {
 }
 
 .card--summary {
+  display: flex;
+  flex-direction: column;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -324,6 +326,7 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  flex: 0 0 auto;
 }
 
 .card--summary .asset-summary-header {
@@ -442,12 +445,15 @@ body::after {
 }
 
 .card--summary .chart-placeholder {
-  min-height: 144px;
-  height: 144px;
+  min-height: 0;
+  height: auto;
   border: none;
   background: transparent;
   color: transparent;
   padding-bottom: 0;
+  flex: 1 1 auto;
+  align-items: flex-end;
+  overflow: hidden;
 }
 
 .card--summary .chart-placeholder::after {
@@ -516,6 +522,12 @@ body::after {
 
 .chart-placeholder svg {
   filter: drop-shadow(0 0 12px rgba(200, 242, 107, 0.25));
+}
+
+.card--summary .chart-placeholder svg {
+  height: 100%;
+  width: 100%;
+  display: block;
 }
 .summary-grid {
   display: grid;
