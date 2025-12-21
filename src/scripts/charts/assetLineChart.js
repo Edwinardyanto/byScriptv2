@@ -8,7 +8,8 @@ export const renderAssetLineChart = (container, series) => {
   const width = 600;
   const height = 190;
   const paddingTop = 12;
-  const paddingBottom = 6;
+  const paddingBottom = 4;
+  const paddingX = 18;
   const values = series.map(Number);
   const min = Math.min(...values);
   const max = Math.max(...values);
@@ -19,9 +20,9 @@ export const renderAssetLineChart = (container, series) => {
   svg.setAttribute("width", "100%");
   svg.setAttribute("height", "100%");
 
-  const step = (width - paddingTop * 2) / (values.length - 1 || 1);
+  const step = (width - paddingX * 2) / (values.length - 1 || 1);
   const points = values.map((value, index) => {
-    const x = paddingTop + index * step;
+    const x = paddingX + index * step;
     const y = height - paddingBottom - ((value - min) / range) * (height - paddingTop - paddingBottom);
     return { x, y };
   });
@@ -30,11 +31,11 @@ export const renderAssetLineChart = (container, series) => {
     .join(" ");
 
   const baseline = createSvgElement("line");
-  baseline.setAttribute("x1", paddingTop);
-  baseline.setAttribute("x2", width - paddingTop);
+  baseline.setAttribute("x1", paddingX);
+  baseline.setAttribute("x2", width - paddingX);
   baseline.setAttribute("y1", height - paddingBottom);
   baseline.setAttribute("y2", height - paddingBottom);
-  baseline.setAttribute("stroke", "rgba(255, 255, 255, 0.18)");
+  baseline.setAttribute("stroke", "rgba(255, 255, 255, 0.16)");
   baseline.setAttribute("stroke-width", "1");
   baseline.setAttribute("stroke-dasharray", "4 6");
 
@@ -79,7 +80,7 @@ export const renderAssetLineChart = (container, series) => {
   const tooltip = document.createElement("div");
   tooltip.textContent = "";
   tooltip.style.position = "absolute";
-  tooltip.style.top = "10px";
+  tooltip.style.top = "0";
   tooltip.style.left = "0";
   tooltip.style.padding = "6px 10px";
   tooltip.style.borderRadius = "999px";
@@ -108,10 +109,10 @@ export const renderAssetLineChart = (container, series) => {
       return;
     }
     const relativeX = ((clientX - rect.left) / rect.width) * width;
-    const clampedX = Math.min(Math.max(relativeX, paddingTop), width - paddingTop);
+    const clampedX = Math.min(Math.max(relativeX, paddingX), width - paddingX);
     const index = Math.min(
       points.length - 1,
-      Math.max(0, Math.round((clampedX - paddingTop) / step))
+      Math.max(0, Math.round((clampedX - paddingX) / step))
     );
     const point = points[index];
     const value = values[index];
@@ -126,9 +127,14 @@ export const renderAssetLineChart = (container, series) => {
     tooltip.textContent = tooltipText;
     tooltip.style.opacity = "1";
     const tooltipWidth = tooltip.offsetWidth;
+    const tooltipHeight = tooltip.offsetHeight;
     const xPx = (point.x / width) * rect.width;
+    const yPx = (point.y / height) * rect.height;
     const clampedLeft = Math.min(Math.max(xPx - tooltipWidth / 2, 0), rect.width - tooltipWidth);
+    const offsetY = 12;
+    const clampedTop = Math.min(Math.max(yPx - tooltipHeight - offsetY, 0), rect.height - tooltipHeight);
     tooltip.style.left = `${clampedLeft}px`;
+    tooltip.style.top = `${clampedTop}px`;
   };
 
   overlay.addEventListener("mousemove", (event) => {
