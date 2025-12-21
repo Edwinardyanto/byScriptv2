@@ -6,7 +6,9 @@ export const renderAssetLineChart = (container, series) => {
   }
 
   const width = 600;
-  const height = 190;
+  const plotHeight = 190;
+  const labelOffset = 10;
+  const height = plotHeight + labelOffset;
   const paddingTop = 12;
   const paddingBottom = 4;
   const paddingX = 18;
@@ -23,7 +25,8 @@ export const renderAssetLineChart = (container, series) => {
   const step = (width - paddingX * 2) / (values.length - 1 || 1);
   const points = values.map((value, index) => {
     const x = paddingX + index * step;
-    const y = height - paddingBottom - ((value - min) / range) * (height - paddingTop - paddingBottom);
+    const y =
+      plotHeight - paddingBottom - ((value - min) / range) * (plotHeight - paddingTop - paddingBottom);
     return { x, y };
   });
   const d = points
@@ -33,11 +36,23 @@ export const renderAssetLineChart = (container, series) => {
   const baseline = createSvgElement("line");
   baseline.setAttribute("x1", paddingX);
   baseline.setAttribute("x2", width - paddingX);
-  baseline.setAttribute("y1", height - paddingBottom);
-  baseline.setAttribute("y2", height - paddingBottom);
+  const baselineY = plotHeight - paddingBottom;
+  baseline.setAttribute("y1", baselineY);
+  baseline.setAttribute("y2", baselineY);
   baseline.setAttribute("stroke", "rgba(255, 255, 255, 0.16)");
   baseline.setAttribute("stroke-width", "1");
   baseline.setAttribute("stroke-dasharray", "4 6");
+
+  const anchorLine = createSvgElement("line");
+  const anchorWidth = (width - paddingX * 2) * 0.75;
+  const anchorX = (width - anchorWidth) / 2;
+  const anchorY = height - 4;
+  anchorLine.setAttribute("x1", anchorX);
+  anchorLine.setAttribute("x2", anchorX + anchorWidth);
+  anchorLine.setAttribute("y1", anchorY);
+  anchorLine.setAttribute("y2", anchorY);
+  anchorLine.setAttribute("stroke", "rgba(255, 255, 255, 0.08)");
+  anchorLine.setAttribute("stroke-width", "1");
 
   const glow = createSvgElement("path");
   glow.setAttribute("d", d);
@@ -57,7 +72,7 @@ export const renderAssetLineChart = (container, series) => {
 
   const hoverLine = createSvgElement("line");
   hoverLine.setAttribute("y1", paddingTop);
-  hoverLine.setAttribute("y2", height - paddingBottom);
+  hoverLine.setAttribute("y2", baselineY);
   hoverLine.setAttribute("stroke", "rgba(255, 255, 255, 0.2)");
   hoverLine.setAttribute("stroke-width", "1");
   hoverLine.setAttribute("stroke-dasharray", "4 6");
@@ -74,8 +89,68 @@ export const renderAssetLineChart = (container, series) => {
   overlay.setAttribute("x", "0");
   overlay.setAttribute("y", "0");
   overlay.setAttribute("width", width);
-  overlay.setAttribute("height", height);
+  overlay.setAttribute("height", plotHeight);
   overlay.setAttribute("fill", "transparent");
+
+  const labelGroup = createSvgElement("g");
+  const labelY = baselineY + 12;
+  const labelFontSize = "11";
+
+  const formatLabelDate = (index) => {
+    const daysFromEnd = values.length - 1 - index;
+    const date = new Date();
+    date.setDate(date.getDate() - daysFromEnd);
+    return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  };
+
+  const labelIndices = (() => {
+    if (values.length === 7) {
+      return [0, 3, 6];
+    }
+    if (values.length === 30) {
+      return [0, 6, 13, 20, 27];
+    }
+    if (values.length === 90) {
+      return [0, 29, 59, 89];
+    }
+    return [0, Math.floor(values.length / 2), values.length - 1];
+  })();
+
+  labelIndices.forEach((index) => {
+    const point = points[index];
+    const label = createSvgElement("text");
+    label.setAttribute("x", point.x);
+    label.setAttribute("y", labelY);
+    label.setAttribute("fill", "rgba(255, 255, 255, 0.45)");
+    label.setAttribute("font-size", labelFontSize);
+    label.setAttribute("text-anchor", "middle");
+    label.textContent = formatLabelDate(index);
+    labelGroup.appendChild(label);
+  });
+
+  const contextValueLeft = createSvgElement("text");
+  contextValueLeft.setAttribute("x", points[0].x);
+  contextValueLeft.setAttribute(
+    "y",
+    Math.max(points[0].y - 10, paddingTop + 10)
+  );
+  contextValueLeft.setAttribute("fill", "rgba(255, 255, 255, 0.4)");
+  contextValueLeft.setAttribute("font-size", "11");
+  contextValueLeft.setAttribute("text-anchor", "start");
+  contextValueLeft.textContent = values[0].toLocaleString(undefined, { maximumFractionDigits: 2 });
+
+  const contextValueRight = createSvgElement("text");
+  contextValueRight.setAttribute("x", points[points.length - 1].x);
+  contextValueRight.setAttribute(
+    "y",
+    Math.max(points[points.length - 1].y - 10, paddingTop + 10)
+  );
+  contextValueRight.setAttribute("fill", "rgba(255, 255, 255, 0.4)");
+  contextValueRight.setAttribute("font-size", "11");
+  contextValueRight.setAttribute("text-anchor", "end");
+  contextValueRight.textContent = values[values.length - 1].toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+  });
 
   const tooltip = document.createElement("div");
   tooltip.textContent = "";
@@ -96,8 +171,12 @@ export const renderAssetLineChart = (container, series) => {
   container.style.position = "relative";
   container.appendChild(tooltip);
   svg.appendChild(baseline);
+  svg.appendChild(anchorLine);
   svg.appendChild(glow);
   svg.appendChild(path);
+  svg.appendChild(contextValueLeft);
+  svg.appendChild(contextValueRight);
+  svg.appendChild(labelGroup);
   svg.appendChild(hoverLine);
   svg.appendChild(hoverDot);
   svg.appendChild(overlay);
