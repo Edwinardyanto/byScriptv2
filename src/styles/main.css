@@ -151,6 +151,8 @@ body::after {
 
 .dashboard-row--full {
   grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  grid-auto-rows: minmax(min-content, max-content);
 }
 
 .dashboard-row--split {
