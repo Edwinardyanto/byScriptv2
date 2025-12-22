@@ -148,7 +148,7 @@ export const renderAssetLineChart = (container, series) => {
     const maxLabelX = width - labelPaddingX;
     const labelX = Math.min(Math.max(point.x, minLabelX), maxLabelX);
     const label = createSvgElement("text");
-    label.setAttribute("x", labelX);
+    label.setAttribute("x", point.x);
     label.setAttribute("y", labelY);
     label.setAttribute("fill", "rgba(255, 255, 255, 0.45)");
     label.setAttribute("font-size", labelFontSize);
