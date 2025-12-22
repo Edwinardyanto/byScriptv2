@@ -606,6 +606,10 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
   justify-content: center;
   align-self: stretch;
   height: 100%;
