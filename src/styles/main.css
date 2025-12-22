@@ -253,7 +253,8 @@ body::after {
 }
 
 .section--secondary {
-  height: 200px;
+  height: auto;
+  min-height: 200px;
 }
 
 .section--autotraders-summary {
@@ -269,7 +270,8 @@ body::after {
 }
 
 .dashboard-row--bottom .section--secondary {
-  height: 170px;
+  height: auto;
+  min-height: 170px;
 }
 
 .header-meta {
