@@ -29,18 +29,40 @@ export const renderAssetLineChart = (container, series) => {
     return;
   }
 
-  const width = 600;
+  container.__assetChartSeries = series;
+  if (!container.__assetChartResizeHandler) {
+    const resizeHandler = () => {
+      renderAssetLineChart(container, container.__assetChartSeries);
+    };
+    if (typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver(() => {
+        resizeHandler();
+      });
+      observer.observe(container);
+      container.__assetChartResizeObserver = observer;
+    }
+    window.addEventListener("resize", resizeHandler);
+    container.__assetChartResizeHandler = resizeHandler;
+  }
+
+  const containerWidth = container.clientWidth || container.getBoundingClientRect().width;
+  if (!containerWidth) {
+    return;
+  }
+  const width = containerWidth;
   const plotHeight = 190;
   const plotTop = 12;
   const labelZoneHeight = 18;
   const paddingX = 24;
-  const labelEdgeInset = 4;
+  const labelPaddingX = paddingX * 1.5;
+  const plotBottomPadding = Math.max(4, Math.round(plotHeight * 0.04));
   const height = plotTop + plotHeight + labelZoneHeight;
   const baselineY = plotTop + plotHeight;
   const values = series.map(Number);
   const min = Math.min(...values);
   const max = Math.max(...values);
   const range = max - min || 1;
+  const plotInnerHeight = plotHeight - plotBottomPadding;
 
   const svg = createSvgElement("svg");
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
@@ -50,7 +72,7 @@ export const renderAssetLineChart = (container, series) => {
   const stepX = (width - paddingX * 2) / (values.length - 1 || 1);
   const points = values.map((value, index) => {
     const x = paddingX + index * stepX;
-    const y = baselineY - ((value - min) / range) * plotHeight;
+    const y = baselineY - plotBottomPadding - ((value - min) / range) * plotInnerHeight;
     return { x, y };
   });
 
@@ -122,12 +144,9 @@ export const renderAssetLineChart = (container, series) => {
     if (!point) {
       return;
     }
-    let labelX = point.x;
-    if (index === 0) {
-      labelX = paddingX + labelEdgeInset;
-    } else if (index === points.length - 1) {
-      labelX = width - paddingX - labelEdgeInset;
-    }
+    const minLabelX = labelPaddingX;
+    const maxLabelX = width - labelPaddingX;
+    const labelX = Math.min(Math.max(point.x, minLabelX), maxLabelX);
     const label = createSvgElement("text");
     label.setAttribute("x", labelX);
     label.setAttribute("y", labelY);
