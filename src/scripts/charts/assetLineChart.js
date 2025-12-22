@@ -133,7 +133,13 @@ export const renderAssetLineChart = (container, series) => {
     label.setAttribute("y", labelY);
     label.setAttribute("fill", "rgba(255, 255, 255, 0.45)");
     label.setAttribute("font-size", labelFontSize);
-    label.setAttribute("text-anchor", "middle");
+    if (index === 0) {
+      label.setAttribute("text-anchor", "start");
+    } else if (index === points.length - 1) {
+      label.setAttribute("text-anchor", "end");
+    } else {
+      label.setAttribute("text-anchor", "middle");
+    }
     label.textContent = formatLabelDate(index);
     labelGroup.appendChild(label);
   });
