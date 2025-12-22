@@ -155,6 +155,7 @@ body::after {
 
 .dashboard-row--split {
   grid-template-columns: 2fr 1fr;
+  grid-auto-rows: minmax(min-content, auto);
 }
 
 .dashboard-row--bottom {
@@ -164,6 +165,7 @@ body::after {
 .dashboard-left,
 .dashboard-right {
   display: flex;
+  min-height: 0;
 }
 
 .dashboard-left > .section,
@@ -255,6 +257,10 @@ body::after {
 .section--secondary {
   height: auto;
   min-height: 200px;
+}
+
+.dashboard-row--split .section--secondary {
+  min-height: 270px;
 }
 
 .section--autotraders-summary {
