@@ -221,7 +221,7 @@ body::after {
 .asset-summary-bg {
   position: absolute;
   inset: 0;
-  background-image: url("../../assets/images/asset-summary-bg.png");
+  background-image: none;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
