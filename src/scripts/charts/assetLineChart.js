@@ -34,7 +34,7 @@ export const renderAssetLineChart = (container, series) => {
   const plotTop = 12;
   const labelZoneHeight = 18;
   const paddingX = 24;
-  const labelEdgeInset = 4;
+  const labelPaddingX = paddingX * 1.25;
   const height = plotTop + plotHeight + labelZoneHeight;
   const baselineY = plotTop + plotHeight;
   const values = series.map(Number);
@@ -122,12 +122,9 @@ export const renderAssetLineChart = (container, series) => {
     if (!point) {
       return;
     }
-    let labelX = point.x;
-    if (index === 0) {
-      labelX = paddingX + labelEdgeInset;
-    } else if (index === points.length - 1) {
-      labelX = width - paddingX - labelEdgeInset;
-    }
+    const minLabelX = labelPaddingX;
+    const maxLabelX = width - labelPaddingX;
+    const labelX = Math.min(Math.max(point.x, minLabelX), maxLabelX);
     const label = createSvgElement("text");
     label.setAttribute("x", labelX);
     label.setAttribute("y", labelY);
