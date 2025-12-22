@@ -55,12 +55,14 @@ export const renderAssetLineChart = (container, series) => {
   const labelZoneHeight = 18;
   const paddingX = 24;
   const labelPaddingX = paddingX * 1.5;
+  const plotBottomPadding = Math.max(4, Math.round(plotHeight * 0.04));
   const height = plotTop + plotHeight + labelZoneHeight;
   const baselineY = plotTop + plotHeight;
   const values = series.map(Number);
   const min = Math.min(...values);
   const max = Math.max(...values);
   const range = max - min || 1;
+  const plotInnerHeight = plotHeight - plotBottomPadding;
 
   const svg = createSvgElement("svg");
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
@@ -70,7 +72,7 @@ export const renderAssetLineChart = (container, series) => {
   const stepX = (width - paddingX * 2) / (values.length - 1 || 1);
   const points = values.map((value, index) => {
     const x = paddingX + index * stepX;
-    const y = baselineY - ((value - min) / range) * plotHeight;
+    const y = baselineY - plotBottomPadding - ((value - min) / range) * plotInnerHeight;
     return { x, y };
   });
 
