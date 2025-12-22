@@ -29,12 +29,32 @@ export const renderAssetLineChart = (container, series) => {
     return;
   }
 
-  const width = 600;
+  container.__assetChartSeries = series;
+  if (!container.__assetChartResizeHandler) {
+    const resizeHandler = () => {
+      renderAssetLineChart(container, container.__assetChartSeries);
+    };
+    if (typeof ResizeObserver !== "undefined") {
+      const observer = new ResizeObserver(() => {
+        resizeHandler();
+      });
+      observer.observe(container);
+      container.__assetChartResizeObserver = observer;
+    }
+    window.addEventListener("resize", resizeHandler);
+    container.__assetChartResizeHandler = resizeHandler;
+  }
+
+  const containerWidth = container.clientWidth || container.getBoundingClientRect().width;
+  if (!containerWidth) {
+    return;
+  }
+  const width = containerWidth;
   const plotHeight = 190;
   const plotTop = 12;
   const labelZoneHeight = 18;
   const paddingX = 24;
-  const labelPaddingX = paddingX * 1.25;
+  const labelPaddingX = paddingX * 1.5;
   const height = plotTop + plotHeight + labelZoneHeight;
   const baselineY = plotTop + plotHeight;
   const values = series.map(Number);
