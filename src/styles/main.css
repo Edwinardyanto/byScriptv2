@@ -1,225 +1,761 @@
-const createSvgElement = (tag) => document.createElementNS("http://www.w3.org/2000/svg", tag);
+:root {
+  --color-bg: #120f1a;
+  --color-surface: #1b1825;
+  --color-surface-raised: #241f31;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-text: #e8e3f3;
+  --color-muted: #b6b0c8;
+  --color-accent: #c8f26b;
+  --color-warning: #ff7b7b;
+  --color-pill: rgba(255, 255, 255, 0.08);
+  --shadow-soft: 0 22px 44px rgba(7, 5, 16, 0.5);
+  --radius-lg: 20px;
+  --radius-md: 20px;
+  --radius-sm: 12px;
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --gap-inner: 6px;
+  --gap-outer: 10px;
+}
 
-const buildLabelIndices = (length, count) => {
-  if (length <= 1 || count <= 1) {
-    return [0];
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  background: radial-gradient(circle at top, #251c39 0%, #120f1a 55%, #0c0a12 100%);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: 1.45;
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(200, 242, 107, 0.08), transparent 45%),
+    radial-gradient(circle at 80% 20%, rgba(255, 123, 123, 0.12), transparent 35%),
+    radial-gradient(circle at 50% 80%, rgba(120, 88, 200, 0.2), transparent 55%);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+  opacity: 0.32;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--color-muted);
+  transition: background 0.2s ease, color 0.2s ease, border 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.sidebar-item--active {
+  background: rgba(200, 242, 107, 0.12);
+  color: var(--color-text);
+  border: 1px solid rgba(200, 242, 107, 0.25);
+  box-shadow: 0 0 18px rgba(200, 242, 107, 0.3), 0 0 32px rgba(200, 242, 107, 0.18);
+  position: relative;
+}
+
+.sidebar-item:not(.sidebar-item--active) {
+  opacity: 0.48;
+}
+
+.sidebar-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
+}
+
+.sidebar-item:not(.sidebar-item--active) .sidebar-icon {
+  opacity: 0.4;
+}
+
+.sidebar-label {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+  gap: var(--gap-outer);
+  padding: var(--gap-outer);
+  position: relative;
+  z-index: 2;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, rgba(44, 36, 64, 0.96), rgba(14, 12, 20, 0.98));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 8px 12px;
+  box-shadow: var(--shadow-soft);
+  position: sticky;
+  top: var(--gap-outer);
+  height: calc(100vh - (var(--gap-outer) * 2));
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: hidden;
+  min-height: 0;
+  height: calc(100vh - (var(--gap-outer) * 2));
+}
+
+.dashboard-row {
+  display: grid;
+  column-gap: var(--gap-inner);
+  row-gap: 8px;
+  align-items: stretch;
+}
+
+.dashboard-row--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.dashboard-row--split {
+  grid-template-columns: 2fr 1fr;
+}
+
+.dashboard-row--bottom {
+  grid-template-columns: 2fr 1fr;
+}
+
+.dashboard-left,
+.dashboard-right {
+  display: flex;
+}
+
+.dashboard-left > .section,
+.dashboard-right > .section {
+  flex: 1;
+}
+
+.dashboard-right--stack {
+  flex-direction: column;
+  gap: var(--gap-inner);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(160deg, rgba(38, 32, 52, 0.95), rgba(14, 12, 20, 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+  min-height: 0;
+  padding: 10px 16px;
+  width: 100%;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), inset 0 -14px 24px rgba(6, 4, 10, 0.6),
+    0 26px 50px rgba(8, 6, 16, 0.6), 0 0 22px rgba(120, 88, 200, 0.08);
+}
+
+.section-header {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.section-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 6px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.section--primary .section-body {
+  position: relative;
+  overflow: hidden;
+}
+
+.asset-summary-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("../../assets/images/asset-summary-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.95;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.asset-summary-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.section--header {
+  height: 56px;
+}
+
+.section--primary {
+  height: 400px;
+  position: relative;
+  overflow: hidden;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+.section--secondary {
+  height: 200px;
+}
+
+.section--autotraders-summary {
+  height: 300px;
+}
+
+.section--autotraders {
+  height: 220px;
+}
+
+.section--affiliate {
+  height: 200px;
+}
+
+.dashboard-row--bottom .section--secondary {
+  height: 170px;
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-muted);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--color-pill);
+  border: 1px solid var(--color-border);
+  font-size: 0.8rem;
+  color: var(--color-text);
+}
+
+.header-subtitle {
+  font-size: 0.9rem;
+  line-height: 1.15;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: linear-gradient(160deg, rgba(36, 30, 48, 0.96), rgba(12, 11, 18, 0.98));
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -12px 22px rgba(6, 4, 10, 0.55),
+    0 22px 38px rgba(8, 6, 16, 0.55), 0 0 20px rgba(120, 88, 200, 0.07);
+}
+
+.card--summary {
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.card--summary .stat-label {
+  display: none;
+}
+
+.card--summary .summary-top {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.card--summary .asset-summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.card--summary .timeframe-pills {
+  position: static;
+  transform: none;
+  margin-left: 0;
+  margin-top: 0;
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.card--summary::before,
+.card--summary::after {
+  content: none;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-value-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  line-height: 1.1;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.stat-caption {
+  font-size: 0.72rem;
+  color: rgba(182, 176, 200, 0.6);
+  line-height: 1.1;
+}
+
+.card--summary .stat-change {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.section--primary .section-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(182, 176, 200, 0.7);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
+
+.badge--positive {
+  background: rgba(200, 242, 107, 0.2);
+  color: var(--color-accent);
+}
+
+.card--summary .badge--positive {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  text-transform: none;
+  letter-spacing: 0.01em;
+  background: rgba(200, 242, 107, 0.16);
+  box-shadow: inset 0 0 8px rgba(200, 242, 107, 0.2), 0 0 12px rgba(200, 242, 107, 0.18);
+}
+
+.badge--warning {
+  background: rgba(255, 123, 123, 0.2);
+  color: var(--color-warning);
+}
+
+.chart-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 144px;
+  height: 144px;
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  background: radial-gradient(circle at 20% 20%, rgba(200, 242, 107, 0.08), transparent 45%),
+    linear-gradient(160deg, rgba(22, 20, 30, 0.9), rgba(16, 14, 22, 0.95));
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  position: relative;
+  padding-bottom: 24px;
+}
+
+.card--summary .chart-placeholder {
+  min-height: 0;
+  height: auto;
+  border: none;
+  background: transparent;
+  color: transparent;
+  padding-bottom: 0;
+  flex: 0 0 auto;
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.card--summary .chart-placeholder::after {
+  display: none;
+}
+
+.chart-placeholder::after {
+  content: "";
+  position: absolute;
+  right: 14%;
+  top: 38%;
+  width: 46px;
+  height: 46px;
+  background: radial-gradient(circle, rgba(200, 242, 107, 0.55), rgba(200, 242, 107, 0.15) 45%, transparent 70%);
+  filter: blur(2px);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.timeframe-pills {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+}
+
+.timeframe-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  background: rgba(12, 10, 18, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 10px rgba(6, 4, 10, 0.6);
+}
+
+.card--summary .timeframe-pill {
+  border: none;
+  background: rgba(14, 12, 20, 0.6);
+  color: rgba(182, 176, 200, 0.65);
+  box-shadow: none;
+}
+
+.timeframe-pill--active {
+  color: var(--color-text);
+  background: rgba(200, 242, 107, 0.22);
+  border-color: rgba(200, 242, 107, 0.45);
+  box-shadow: inset 0 0 10px rgba(200, 242, 107, 0.25), 0 0 16px rgba(200, 242, 107, 0.25);
+}
+
+.card--summary .timeframe-pill--active {
+  background: rgba(200, 242, 107, 0.2);
+  box-shadow: inset 0 0 10px rgba(200, 242, 107, 0.2), 0 0 12px rgba(200, 242, 107, 0.2);
+}
+
+.chart-placeholder svg {
+  filter: drop-shadow(0 0 12px rgba(200, 242, 107, 0.25));
+}
+
+.card--summary .chart-placeholder svg {
+  height: 100%;
+  width: 100%;
+  display: block;
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 8px;
+  height: 100%;
+}
+
+.summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  overflow: auto;
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--color-muted);
+}
+
+.summary-item:first-child {
+  background: rgba(200, 242, 107, 0.08);
+  border-color: rgba(200, 242, 107, 0.25);
+  color: var(--color-text);
+}
+
+.summary-item-name {
+  font-size: 0.85rem;
+  line-height: 1.1;
+}
+
+.summary-item-value {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.summary-total {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-md);
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  justify-content: center;
+  height: 100%;
+}
+
+.summary-total .chart-placeholder {
+  min-height: 108px;
+  height: 108px;
+  padding-bottom: 16px;
+}
+
+.alert-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgba(92, 35, 35, 0.35), rgba(48, 22, 30, 0.7));
+  border: 1px solid rgba(255, 123, 123, 0.25);
+  box-shadow: inset 0 0 10px rgba(255, 123, 123, 0.1), 0 0 18px rgba(255, 123, 123, 0.08);
+  height: 100%;
+}
+
+.alert-title {
+  font-weight: 600;
+}
+
+.alert-message {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  line-height: 1.1;
+}
+
+.alert-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  line-height: 1.1;
+}
+
+.button {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 0 10px rgba(200, 242, 107, 0.15);
+}
+
+.alert-card .button {
+  background: rgba(200, 242, 107, 0.18);
+  border-color: rgba(200, 242, 107, 0.4);
+  box-shadow: inset 0 0 10px rgba(200, 242, 107, 0.18), 0 0 18px rgba(200, 242, 107, 0.2);
+}
+
+.button--ghost {
+  align-self: flex-start;
+}
+
+.autotraders-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.autotrader-card {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  min-height: 140px;
+}
+
+.autotrader-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.autotrader-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.autotrader-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.autotrader-name-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.autotrader-name {
+  font-weight: 600;
+}
+
+.autotrader-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: rgba(200, 242, 107, 0.2);
+  color: var(--color-accent);
+}
+
+.autotrader-pnl {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.autotrader-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  line-height: 1.1;
+}
+
+.autotrader-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.affiliate-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.affiliate-description {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.stats-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: auto;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 1024px) {
+  .app {
+    grid-template-columns: 200px 1fr;
   }
-  const indices = new Set();
-  for (let i = 0; i < count; i += 1) {
-    indices.add(Math.round((i * (length - 1)) / (count - 1)));
-  }
-  return Array.from(indices).sort((a, b) => a - b);
-};
-
-const getLabelIndices = (length) => {
-  if (length === 7) {
-    return [0, 3, 6];
-  }
-  if (length === 30) {
-    return buildLabelIndices(length, 5);
-  }
-  if (length === 90) {
-    return buildLabelIndices(length, 4);
-  }
-  return buildLabelIndices(length, 3);
-};
-
-export const renderAssetLineChart = (container, series) => {
-  if (!container || !Array.isArray(series) || series.length === 0) {
-    return;
-  }
-
-  const width = 600;
-  const plotHeight = 190;
-  const plotTop = 12;
-  const labelZoneHeight = 18;
-  const paddingX = 24;
-  const labelEdgeInset = 4;
-  const height = plotTop + plotHeight + labelZoneHeight;
-  const baselineY = plotTop + plotHeight;
-  const values = series.map(Number);
-  const min = Math.min(...values);
-  const max = Math.max(...values);
-  const range = max - min || 1;
-
-  const svg = createSvgElement("svg");
-  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  svg.setAttribute("width", "100%");
-  svg.setAttribute("height", "100%");
-
-  const stepX = (width - paddingX * 2) / (values.length - 1 || 1);
-  const points = values.map((value, index) => {
-    const x = paddingX + index * stepX;
-    const y = baselineY - ((value - min) / range) * plotHeight;
-    return { x, y };
-  });
-
-  const pathData = points
-    .map((point, index) => `${index === 0 ? "M" : "L"}${point.x} ${point.y}`)
-    .join(" ");
-
-  const baseline = createSvgElement("line");
-  baseline.setAttribute("x1", paddingX);
-  baseline.setAttribute("x2", width - paddingX);
-  baseline.setAttribute("y1", baselineY);
-  baseline.setAttribute("y2", baselineY);
-  baseline.setAttribute("stroke", "rgba(255, 255, 255, 0.16)");
-  baseline.setAttribute("stroke-width", "1");
-  baseline.setAttribute("stroke-dasharray", "4 6");
-
-  const glow = createSvgElement("path");
-  glow.setAttribute("d", pathData);
-  glow.setAttribute("fill", "none");
-  glow.setAttribute("stroke", "rgba(200, 242, 107, 0.35)");
-  glow.setAttribute("stroke-width", "12");
-  glow.setAttribute("stroke-linecap", "round");
-  glow.setAttribute("stroke-linejoin", "round");
-
-  const line = createSvgElement("path");
-  line.setAttribute("d", pathData);
-  line.setAttribute("fill", "none");
-  line.setAttribute("stroke", "#c8f26b");
-  line.setAttribute("stroke-width", "5");
-  line.setAttribute("stroke-linecap", "round");
-  line.setAttribute("stroke-linejoin", "round");
-
-  const hoverLine = createSvgElement("line");
-  hoverLine.setAttribute("y1", plotTop);
-  hoverLine.setAttribute("y2", baselineY);
-  hoverLine.setAttribute("stroke", "rgba(255, 255, 255, 0.2)");
-  hoverLine.setAttribute("stroke-width", "1");
-  hoverLine.setAttribute("stroke-dasharray", "4 6");
-  hoverLine.style.opacity = "0";
-
-  const hoverDot = createSvgElement("circle");
-  hoverDot.setAttribute("r", "4");
-  hoverDot.setAttribute("fill", "#c8f26b");
-  hoverDot.setAttribute("stroke", "rgba(200, 242, 107, 0.4)");
-  hoverDot.setAttribute("stroke-width", "3");
-  hoverDot.style.opacity = "0";
-
-  const overlay = createSvgElement("rect");
-  overlay.setAttribute("x", paddingX);
-  overlay.setAttribute("y", plotTop);
-  overlay.setAttribute("width", width - paddingX * 2);
-  overlay.setAttribute("height", plotHeight);
-  overlay.setAttribute("fill", "transparent");
-
-  const labelGroup = createSvgElement("g");
-  const labelY = baselineY + 12;
-  const labelFontSize = "11";
-
-  const formatLabelDate = (index) => {
-    const daysFromEnd = values.length - 1 - index;
-    const date = new Date();
-    date.setDate(date.getDate() - daysFromEnd);
-    return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
-  };
-
-  const labelIndices = getLabelIndices(values.length);
-  labelIndices.forEach((index) => {
-    const point = points[index];
-    if (!point) {
-      return;
-    }
-    let labelX = point.x;
-    if (index === 0) {
-      labelX = paddingX + labelEdgeInset;
-    } else if (index === points.length - 1) {
-      labelX = width - paddingX - labelEdgeInset;
-    }
-    const label = createSvgElement("text");
-    label.setAttribute("x", labelX);
-    label.setAttribute("y", labelY);
-    label.setAttribute("fill", "rgba(255, 255, 255, 0.45)");
-    label.setAttribute("font-size", labelFontSize);
-    if (index === 0) {
-      label.setAttribute("text-anchor", "start");
-    } else if (index === points.length - 1) {
-      label.setAttribute("text-anchor", "end");
-    } else {
-      label.setAttribute("text-anchor", "middle");
-    }
-    label.textContent = formatLabelDate(index);
-    labelGroup.appendChild(label);
-  });
-
-  const tooltip = document.createElement("div");
-  tooltip.textContent = "";
-  tooltip.style.position = "absolute";
-  tooltip.style.top = "0";
-  tooltip.style.left = "0";
-  tooltip.style.padding = "6px 10px";
-  tooltip.style.borderRadius = "999px";
-  tooltip.style.background = "rgba(10, 9, 16, 0.8)";
-  tooltip.style.color = "#f2f0f8";
-  tooltip.style.fontSize = "0.8rem";
-  tooltip.style.whiteSpace = "nowrap";
-  tooltip.style.pointerEvents = "none";
-  tooltip.style.opacity = "0";
-  tooltip.style.transition = "opacity 0.1s ease";
-
-  container.innerHTML = "";
-  container.style.position = "relative";
-  container.appendChild(tooltip);
-  svg.appendChild(baseline);
-  svg.appendChild(glow);
-  svg.appendChild(line);
-  svg.appendChild(labelGroup);
-  svg.appendChild(hoverLine);
-  svg.appendChild(hoverDot);
-  svg.appendChild(overlay);
-  container.appendChild(svg);
-
-  const updateHover = (clientX) => {
-    const rect = svg.getBoundingClientRect();
-    if (!rect.width) {
-      return;
-    }
-    const relativeX = ((clientX - rect.left) / rect.width) * width;
-    const clampedX = Math.min(Math.max(relativeX, paddingX), width - paddingX);
-    const index = Math.min(
-      points.length - 1,
-      Math.max(0, Math.round((clampedX - paddingX) / stepX))
-    );
-    const point = points[index];
-    const value = values[index];
-    if (!point) {
-      return;
-    }
-    hoverLine.setAttribute("x1", point.x);
-    hoverLine.setAttribute("x2", point.x);
-    hoverDot.setAttribute("cx", point.x);
-    hoverDot.setAttribute("cy", point.y);
-    hoverLine.style.opacity = "1";
-    hoverDot.style.opacity = "1";
-
-    tooltip.textContent = value.toLocaleString(undefined, { maximumFractionDigits: 2 });
-    tooltip.style.opacity = "1";
-    const tooltipWidth = tooltip.offsetWidth;
-    const tooltipHeight = tooltip.offsetHeight;
-    const xPx = (point.x / width) * rect.width;
-    const yPx = (point.y / height) * rect.height;
-    const clampedLeft = Math.min(
-      Math.max(xPx - tooltipWidth / 2, 0),
-      rect.width - tooltipWidth
-    );
-    const offsetY = 12;
-    const clampedTop = Math.min(
-      Math.max(yPx - tooltipHeight - offsetY, 0),
-      rect.height - tooltipHeight
-    );
-    tooltip.style.left = `${clampedLeft}px`;
-    tooltip.style.top = `${clampedTop}px`;
-  };
-
-  overlay.addEventListener("mousemove", (event) => {
-    updateHover(event.clientX);
-  });
-
-  overlay.addEventListener("mouseleave", () => {
-    hoverLine.style.opacity = "0";
-    hoverDot.style.opacity = "0";
-    tooltip.style.opacity = "0";
-  });
-};
+}
