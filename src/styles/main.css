@@ -585,7 +585,7 @@ body::after {
   --summary-row-gap: 6px;
   display: grid;
   grid-template-columns: auto auto;
-  grid-template-areas: "total list";
+  grid-template-areas: "donut list";
   gap: 8px;
   align-items: start;
   justify-items: start;
@@ -642,7 +642,7 @@ body::after {
 }
 
 .summary-total {
-  grid-area: total;
+  grid-area: donut;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -871,7 +871,7 @@ body::after {
   .summary-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "list"
-      "total";
+      "donut"
+      "list";
   }
 }
