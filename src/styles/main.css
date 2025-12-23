@@ -689,6 +689,8 @@ body::after {
   align-items: center;
   justify-content: center;
   flex: 0 0 var(--summary-chart-size);
+  border: none;
+  background: none;
 }
 
 .summary-total .chart-placeholder svg {
