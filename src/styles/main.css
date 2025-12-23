@@ -604,6 +604,7 @@ body::after {
   padding-right: var(--summary-row-gap);
   padding-bottom: var(--summary-row-gap);
   box-sizing: border-box;
+  align-content: start;
   justify-items: start;
   justify-self: start;
 }
@@ -661,7 +662,8 @@ body::after {
   box-shadow: none;
   width: var(--summary-chart-size);
   height: var(--summary-chart-size);
-  align-self: center;
+  align-self: start;
+  justify-self: start;
 }
 
 .summary-chart .stat-label,
