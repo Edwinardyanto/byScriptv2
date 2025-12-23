@@ -30,7 +30,7 @@ export const renderExchangesSummary = (sectionState) => {
   const { data, status } = sectionState;
   const list = document.querySelector('[data-list="exchanges"]');
   const section = list?.closest(".section");
-  const chartContainer = section?.querySelector(".summary-total .chart-placeholder");
+  const chartContainer = section?.querySelector(".summary-chart .chart-placeholder");
 
   if (status === "loading") {
     setListMessage(list, "Loading exchanges...");
