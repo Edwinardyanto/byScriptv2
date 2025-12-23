@@ -49,8 +49,7 @@ export const renderExchangesDonutChart = (container, exchanges) => {
 
   const svg = createSvgElement("svg");
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  svg.setAttribute("width", "100%");
-  svg.setAttribute("height", "100%");
+  svg.setAttribute("preserveAspectRatio", "none");
 
   let currentAngle = 0;
   exchanges.forEach((exchange, index) => {
