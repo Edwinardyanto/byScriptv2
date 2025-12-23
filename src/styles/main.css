@@ -888,3 +888,80 @@ body::after {
       "list";
   }
 }
+
+
+/* ===================================================== */
+/* === EXCHANGES SUMMARY OVERRIDE – DO NOT TOUCH ABOVE === */
+/* ===================================================== */
+
+/* ===== Exchanges Summary Locked Layout ===== */
+
+:root {
+  --summary-chart-size: 194px;
+  --summary-row-gap: 6px;
+  --summary-row-count: 5;
+  --summary-row-height: calc(
+    (var(--summary-chart-size) - ((var(--summary-row-count) - 1) * var(--summary-row-gap)))
+    / var(--summary-row-count)
+  );
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: var(--summary-chart-size) auto;
+  grid-template-rows: var(--summary-chart-size);
+  gap: 8px;
+  align-items: start;
+}
+
+/* LEFT: DONUT */
+.summary-chart {
+  width: var(--summary-chart-size);
+  height: var(--summary-chart-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.summary-chart .chart-placeholder {
+  width: 100%;
+  height: 100%;
+  border: none !important;
+  background: none !important;
+  padding: 0;
+}
+
+/* RIGHT: EXCHANGE LIST */
+.summary-list {
+  display: grid;
+  grid-template-rows: repeat(var(--summary-row-count), var(--summary-row-height));
+  row-gap: var(--summary-row-gap);
+  height: var(--summary-chart-size);
+  padding-right: var(--summary-row-gap);
+  padding-bottom: var(--summary-row-gap);
+  align-content: start;
+  overflow: hidden;
+}
+
+/* ITEMS */
+.summary-item {
+  height: var(--summary-row-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* RESPONSIVE */
+@media (max-width: 720px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .summary-chart {
+    margin: 0 auto;
+  }
+}
