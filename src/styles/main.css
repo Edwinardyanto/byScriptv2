@@ -583,9 +583,13 @@ body::after {
   --summary-chart-size: 144px;
   --summary-row-height: 34px;
   --summary-row-gap: 6px;
+  --summary-list-height: calc(
+    (5 * var(--summary-row-height)) + (4 * var(--summary-row-gap)) + var(--summary-row-gap)
+  );
   display: grid;
   grid-template-columns: auto auto;
   grid-template-areas: "donut list";
+  grid-template-rows: var(--summary-list-height);
   gap: 8px;
   align-items: start;
   justify-items: start;
@@ -596,8 +600,12 @@ body::after {
   display: grid;
   grid-template-rows: repeat(5, var(--summary-row-height));
   row-gap: var(--summary-row-gap);
-  height: calc((5 * var(--summary-row-height)) + (4 * var(--summary-row-gap)));
+  height: var(--summary-list-height);
   overflow: hidden;
+  padding-right: var(--summary-row-gap);
+  padding-bottom: var(--summary-row-gap);
+  justify-items: start;
+  justify-self: start;
 }
 
 .summary-item {
@@ -653,6 +661,7 @@ body::after {
   box-shadow: none;
   width: var(--summary-chart-size);
   height: var(--summary-chart-size);
+  align-self: center;
 }
 
 .summary-total .stat-label,
