@@ -580,12 +580,10 @@ body::after {
   display: block;
 }
 .summary-grid {
-  --summary-chart-size: 144px;
-  --summary-row-height: 34px;
+  --summary-chart-size: 194px;
   --summary-row-gap: 6px;
-  --summary-list-height: calc(
-    (5 * var(--summary-row-height)) + (4 * var(--summary-row-gap)) + var(--summary-row-gap)
-  );
+  --summary-row-height: calc((var(--summary-chart-size) - (5 * var(--summary-row-gap))) / 5);
+  --summary-list-height: var(--summary-chart-size);
   display: grid;
   grid-template-columns: auto max-content;
   grid-template-areas: "donut list";
@@ -598,13 +596,14 @@ body::after {
 .summary-list {
   grid-area: list;
   display: grid;
-  grid-template-rows: repeat(5, var(--summary-row-height));
+  grid-template-rows: repeat(5, minmax(0, var(--summary-row-height)));
   row-gap: var(--summary-row-gap);
   height: var(--summary-list-height);
   width: max-content;
   overflow: hidden;
   padding-right: var(--summary-row-gap);
   padding-bottom: var(--summary-row-gap);
+  box-sizing: border-box;
   justify-items: start;
   justify-self: start;
 }
@@ -650,7 +649,7 @@ body::after {
   color: var(--color-text);
 }
 
-.summary-total {
+.summary-chart {
   grid-area: donut;
   display: flex;
   flex-direction: column;
@@ -665,8 +664,8 @@ body::after {
   align-self: center;
 }
 
-.summary-total .stat-label,
-.summary-total .stat-value {
+.summary-chart .stat-label,
+.summary-chart .stat-value {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -678,8 +677,8 @@ body::after {
   border: 0;
 }
 
-.summary-total .stat-label,
-.summary-total .stat-value {
+.summary-chart .stat-label,
+.summary-chart .stat-value {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -691,7 +690,7 @@ body::after {
   border: 0;
 }
 
-.summary-total .chart-placeholder {
+.summary-chart .chart-placeholder {
   width: var(--summary-chart-size);
   height: var(--summary-chart-size);
   padding-bottom: 0;
@@ -703,7 +702,7 @@ body::after {
   background: none;
 }
 
-.summary-total .chart-placeholder svg {
+.summary-chart .chart-placeholder svg {
   width: 100%;
   height: 100%;
 }
