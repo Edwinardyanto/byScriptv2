@@ -33,8 +33,20 @@ body {
   background: radial-gradient(circle at top, #251c39 0%, #120f1a 55%, #0c0a12 100%);
   color: var(--color-text);
   font-family: var(--font-sans);
-  line-height: 1.45;
+  line-height: 1.5;
   overflow: hidden;
+}
+
+.text-dense {
+  line-height: 1.2;
+}
+
+.text-normal {
+  line-height: 1.5;
+}
+
+.text-loose {
+  line-height: 1.7;
 }
 
 body::before {
@@ -552,17 +564,21 @@ body::after {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 8px;
-  grid-template-rows: 1fr;
+  grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
+  height: 100%;
+  min-height: 0;
+  align-content: stretch;
+  flex: 1;
 }
 
 .summary-list {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  overflow: hidden;
-  align-self: stretch;
+  overflow: auto;
   height: 100%;
+  min-height: 0;
 }
 
 .summary-item {
@@ -610,8 +626,8 @@ body::after {
   border: none;
   box-shadow: none;
   justify-content: center;
-  align-self: stretch;
   height: 100%;
+  min-height: 0;
 }
 
 .summary-total .stat-label,
@@ -648,7 +664,7 @@ body::after {
   align-items: center;
   justify-content: center;
   flex: 1;
-  overflow: visible;
+  min-height: 0;
 }
 
 .summary-total .chart-placeholder svg {
