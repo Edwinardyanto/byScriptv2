@@ -589,6 +589,7 @@ body::after {
   gap: 6px;
   overflow-y: auto;
   height: 100%;
+  min-height: 0;
 }
 
 .summary-item {
@@ -637,6 +638,7 @@ body::after {
   box-shadow: none;
   justify-content: center;
   height: 100%;
+  min-height: 0;
 }
 
 .summary-total .stat-label,
