@@ -587,7 +587,7 @@ body::after {
     (5 * var(--summary-row-height)) + (4 * var(--summary-row-gap)) + var(--summary-row-gap)
   );
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto max-content;
   grid-template-areas: "donut list";
   grid-template-rows: var(--summary-list-height);
   gap: 8px;
@@ -601,6 +601,7 @@ body::after {
   grid-template-rows: repeat(5, var(--summary-row-height));
   row-gap: var(--summary-row-gap);
   height: var(--summary-list-height);
+  width: max-content;
   overflow: hidden;
   padding-right: var(--summary-row-gap);
   padding-bottom: var(--summary-row-gap);
