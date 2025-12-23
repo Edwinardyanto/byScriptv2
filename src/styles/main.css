@@ -206,6 +206,13 @@ body::after {
   min-height: auto;
 }
 
+.dashboard-row--summary .dashboard-left > .section,
+.dashboard-row--summary .dashboard-right > .section {
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
 .dashboard-right--stack {
   flex-direction: column;
   gap: var(--gap-inner);
