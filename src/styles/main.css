@@ -173,6 +173,18 @@ body::after {
   align-items: start;
 }
 
+.dashboard-row--summary {
+  flex: 1;
+  min-height: 0;
+  align-items: stretch;
+}
+
+.dashboard-row--summary .dashboard-left > .section,
+.dashboard-row--summary .dashboard-right > .section {
+  flex: 1;
+  min-height: 0;
+}
+
 .dashboard-row--bottom {
   grid-template-columns: 2fr 1fr;
 }
@@ -567,7 +579,6 @@ body::after {
   grid-template-rows: minmax(0, 1fr);
   align-items: stretch;
   height: 100%;
-  min-height: 0;
   align-content: stretch;
   flex: 1;
 }
@@ -576,7 +587,7 @@ body::after {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  overflow: auto;
+  overflow-y: auto;
   height: 100%;
   min-height: 0;
 }
@@ -664,7 +675,6 @@ body::after {
   align-items: center;
   justify-content: center;
   flex: 1;
-  min-height: 0;
 }
 
 .summary-total .chart-placeholder svg {
