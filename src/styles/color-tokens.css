@@ -1,0 +1,28 @@
+:root {
+  --color-bg-primary: #000000;
+  --color-bg-primary-soft: rgba(0, 0, 0, 0.3);
+  --color-bg-contrast: #2a2f3a;
+  --color-bg-surface: #1a1a1a;
+  --color-bg-surface-raised: #2a2f3a;
+
+  --color-text-primary: #ffffff;
+  --color-text-muted: rgba(217, 217, 217, 0.7);
+  --color-text-subtle: rgba(217, 217, 217, 0.6);
+
+  --color-accent-primary: #66ff33;
+  --color-accent-primary-soft: rgba(102, 255, 51, 0.35);
+  --color-accent-hover: #afff5c;
+  --color-accent-secondary: #00f7d5;
+  --color-accent-contrast: #3d2c8d;
+
+  --color-border-neutral: rgba(217, 217, 217, 0.2);
+  --color-divider: rgba(217, 217, 217, 0.12);
+
+  --color-alert-critical: rgba(255, 95, 95, 1);
+  --color-alert-critical-soft: rgba(255, 95, 95, 0.3);
+
+  --color-chart-accent-primary: rgba(102, 255, 51, 0.75);
+  --color-chart-secondary: rgba(0, 247, 213, 0.6);
+  --color-chart-tertiary: rgba(61, 44, 141, 0.6);
+  --color-chart-muted: rgba(217, 217, 217, 0.5);
+}
